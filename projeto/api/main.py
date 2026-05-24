@@ -13,6 +13,7 @@ from pathlib import Path
 import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
+from config.settings import PARQUETS
 from pipeline.score import calcular_scores
 from pipeline.invisiveis import detectar_invisiveis, resumo_por_equipe
 from pipeline.routing import gerar_agenda_equipe
@@ -225,6 +226,146 @@ def painel_gestor():
     by_eq["alto_risco_invisivel"] = by_eq["alto_risco_invisivel"].fillna(0).astype(int)
 
     return by_eq.sort_values("score_pressao", ascending=False).to_dict(orient="records")
+
+
+@app.get("/gestao/indicadores")
+def indicadores_dashboard():
+    df = _cache.get("df_scored")
+    if df is None:
+        raise HTTPException(503, "Dados ainda carregando")
+
+    df = df.copy()
+    visitas = pd.read_parquet(PARQUETS["visitas"])
+    eventos = pd.read_parquet(PARQUETS["eventos"])
+
+    visitas["registrados_em"] = pd.to_datetime(visitas["registrados_em"])
+    eventos["data_referencia"] = pd.to_datetime(eventos["data_referencia"])
+    data_ref = visitas["registrados_em"].max()
+
+    alto_risco = (
+        df["gestacao"] | (df["faixa_etaria"] == "0-6") |
+        df["hipertenso"] | df["diabetico"] |
+        (df["faixa_etaria"] == "66+") | df["situacao_vulnerabilidade"]
+    )
+    sem_visita = df["n_visitas"] == 0
+    deficit = df["deficit_visitas"] > 0
+    urgencias = eventos[eventos["tipo"] == "urgencia-emergencia-ou-internacao"].copy()
+    agendamentos = eventos[eventos["tipo"] == "agendamento"].copy()
+
+    inv = detectar_invisiveis(df)
+    por_cat = inv["categoria_invisivel"].value_counts().sort_index().to_dict()
+
+    visitas_7d = visitas[visitas["registrados_em"] >= data_ref - pd.Timedelta(days=7)]
+    visitas_30d = visitas[visitas["registrados_em"] >= data_ref - pd.Timedelta(days=30)]
+    urg_30d = urgencias[urgencias["data_referencia"] >= data_ref - pd.Timedelta(days=30)]
+
+    weekly = (
+        visitas.assign(semana=visitas["registrados_em"].dt.to_period("W").dt.start_time)
+        .groupby("semana")
+        .size()
+        .tail(8)
+        .reset_index(name="visitas")
+    )
+    weekly["semana"] = weekly["semana"].dt.strftime("%d/%m")
+
+    eventos_mensais = (
+        eventos.assign(mes=eventos["data_referencia"].dt.to_period("M").astype(str))
+        .groupby(["mes", "tipo"])
+        .size()
+        .reset_index(name="total")
+        .tail(12)
+    )
+
+    top_profissionais = (
+        visitas.groupby("profissional_id")
+        .size()
+        .sort_values(ascending=False)
+        .head(10)
+        .reset_index(name="visitas")
+    )
+    top_profissionais["profissional"] = top_profissionais["profissional_id"].str[-8:]
+
+    # Para cada urgência, verifica se houve visita nos 30 dias anteriores.
+    urg_com_visita = 0
+    if not urgencias.empty:
+        ultimas_visitas = visitas[["paciente_id", "registrados_em"]].rename(columns={"registrados_em": "data_visita"})
+        urg_tmp = urgencias[["paciente_id", "data_referencia"]].reset_index(drop=True)
+        merged = urg_tmp.merge(ultimas_visitas, on="paciente_id", how="left")
+        janela = (
+            (merged["data_visita"] <= merged["data_referencia"]) &
+            (merged["data_visita"] >= merged["data_referencia"] - pd.Timedelta(days=30))
+        )
+        urg_com_visita = int(merged.loc[janela, ["paciente_id", "data_referencia"]].drop_duplicates().shape[0])
+    urg_total = int(len(urgencias))
+    urg_sem_visita = max(urg_total - urg_com_visita, 0)
+
+    grupos = [
+        {"grupo": "Gestantes", "total": int(df["gestacao"].sum())},
+        {"grupo": "Crianças 0-6", "total": int((df["faixa_etaria"] == "0-6").sum())},
+        {"grupo": "Hipertensos", "total": int(df["hipertenso"].sum())},
+        {"grupo": "Diabéticos", "total": int(df["diabetico"].sum())},
+        {"grupo": "Idosos 66+", "total": int((df["faixa_etaria"] == "66+").sum())},
+        {"grupo": "Vulneráveis", "total": int(df["situacao_vulnerabilidade"].sum())},
+    ]
+
+    matriz = [
+        {"bloco": "Visão Geral", "indicador": "Volume total da população", "valor": int(len(df)), "tipo": "Bruto"},
+        {"bloco": "Visão Geral", "indicador": "Pacientes invisíveis", "valor": int(sem_visita.sum()), "tipo": "Cruzamento"},
+        {"bloco": "Visão Geral", "indicador": "Crise sem vínculo", "valor": int(df["flag_crise_sem_vinculo"].sum()), "tipo": "Cruzamento"},
+        {"bloco": "Equipes", "indicador": "Cadastro das equipes", "valor": int(df["equipe_id"].nunique()), "tipo": "Bruto"},
+        {"bloco": "Visitas", "indicador": "Histórico bruto de visitas", "valor": int(len(visitas)), "tipo": "Bruto"},
+        {"bloco": "Visitas", "indicador": "Produtividade por ACS", "valor": int(visitas["profissional_id"].nunique()), "tipo": "Bruto"},
+        {"bloco": "Pacientes", "indicador": "Pacientes abaixo da régua", "valor": int(deficit.sum()), "tipo": "Cruzamento"},
+        {"bloco": "Eventos", "indicador": "Histórico bruto de eventos", "valor": int(len(eventos)), "tipo": "Bruto"},
+        {"bloco": "Eventos", "indicador": "Urgência sem visita prévia em 30 dias", "valor": int(urg_sem_visita), "tipo": "Cruzamento"},
+    ]
+
+    return {
+        "atualizado_em": data_ref.strftime("%Y-%m-%d"),
+        "visao_geral": {
+            "total_pacientes": int(len(df)),
+            "total_equipes": int(df["equipe_id"].nunique()),
+            "alto_risco": int(alto_risco.sum()),
+            "pct_alto_risco": round(float(alto_risco.mean() * 100), 1),
+            "sem_visita": int(sem_visita.sum()),
+            "pct_sem_visita": round(float(sem_visita.mean() * 100), 1),
+            "critico_urgente": int(df["prioridade"].astype(str).isin(["CRITICO", "URGENTE"]).sum()),
+            "crise_sem_vinculo": int(df["flag_crise_sem_vinculo"].sum()),
+        },
+        "composicao_clinica": grupos,
+        "invisiveis": {
+            "total": int(len(inv)),
+            "crise_sem_vinculo": int(por_cat.get(1, 0)),
+            "alto_risco_sem_contato": int(por_cat.get(2, 0)),
+            "sem_condicao_especial": int(por_cat.get(3, 0)),
+        },
+        "visitas": {
+            "total": int(len(visitas)),
+            "ultimos_7d": int(len(visitas_7d)),
+            "ultimos_30d": int(len(visitas_30d)),
+            "profissionais_ativos": int(visitas["profissional_id"].nunique()),
+            "media_por_profissional": round(float(len(visitas) / max(visitas["profissional_id"].nunique(), 1)), 1),
+            "por_semana": weekly.to_dict(orient="records"),
+            "top_profissionais": top_profissionais[["profissional", "visitas"]].to_dict(orient="records"),
+        },
+        "eventos": {
+            "total": int(len(eventos)),
+            "urgencias": urg_total,
+            "agendamentos": int(len(agendamentos)),
+            "urgencias_30d": int(len(urg_30d)),
+            "urgencias_com_visita_30d": int(urg_com_visita),
+            "urgencias_sem_visita_30d": int(urg_sem_visita),
+            "pct_urgencias_sem_visita_30d": round(float(urg_sem_visita / max(urg_total, 1) * 100), 1),
+            "por_mes_tipo": eventos_mensais.to_dict(orient="records"),
+        },
+        "pacientes": {
+            "abaixo_regua": int(deficit.sum()),
+            "pct_abaixo_regua": round(float(deficit.mean() * 100), 1),
+            "dias_sem_visita_mediana": int(df["dias_sem_visita"].median()),
+            "score_medio": round(float(df["score_total"].mean()), 1),
+        },
+        "matriz": matriz,
+    }
 
 
 @app.get("/gestao/risco")

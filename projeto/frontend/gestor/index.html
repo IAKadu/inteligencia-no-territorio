@@ -685,6 +685,124 @@
     .inv-card__label { font-size: var(--text-xs); font-weight: var(--weight-bold); text-transform: uppercase; letter-spacing: .08em; color: var(--grey-text); margin-top: var(--space-2); }
     .inv-card__desc { font-size: var(--text-xs); color: var(--grey-text); margin-top: var(--space-1); }
 
+    /* ── INDICATORS DASHBOARD ───────────────────────────────────────── */
+    .indicator-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+    }
+    .indicator-card {
+      background: var(--white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      box-shadow: var(--shadow-sm);
+      border-top: 4px solid var(--blue-primary);
+    }
+    .indicator-card--alert { border-top-color: #dc3545; }
+    .indicator-card--warn { border-top-color: #fd7e14; }
+    .indicator-card--ok { border-top-color: var(--green-accent); }
+    .indicator-card__label {
+      font-size: var(--text-xs);
+      color: var(--grey-text);
+      font-weight: var(--weight-bold);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: var(--space-2);
+    }
+    .indicator-card__value {
+      color: var(--blue-secondary);
+      font-size: 30px;
+      font-weight: var(--weight-black);
+      line-height: 1;
+    }
+    .indicator-card__sub {
+      color: var(--grey-text);
+      font-size: var(--text-xs);
+      margin-top: var(--space-2);
+    }
+    .indicator-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+      gap: var(--space-6);
+      margin-bottom: var(--space-6);
+    }
+    .indicator-panel {
+      background: var(--white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      box-shadow: var(--shadow-sm);
+      min-width: 0;
+    }
+    .indicator-panel__title {
+      color: var(--blue-secondary);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-black);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: var(--space-4);
+    }
+    .indicator-bar-list { display: flex; flex-direction: column; gap: var(--space-3); }
+    .indicator-bar-row {
+      display: grid;
+      grid-template-columns: 120px minmax(0, 1fr) 70px;
+      gap: var(--space-3);
+      align-items: center;
+    }
+    .indicator-bar-row__label {
+      color: var(--grey-dark);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-bold);
+      text-align: right;
+    }
+    .indicator-bar-row__track {
+      height: 22px;
+      background: var(--grey-card);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+    .indicator-bar-row__fill {
+      height: 100%;
+      background: var(--blue-primary);
+      border-radius: var(--radius-sm);
+      min-width: 4px;
+    }
+    .indicator-bar-row__value {
+      color: var(--grey-dark);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-black);
+    }
+    .indicator-mini-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+    }
+    .indicator-mini {
+      background: rgba(0,74,128,.05);
+      border-left: 4px solid var(--cyan-accent);
+      border-radius: var(--radius-sm);
+      padding: var(--space-4);
+    }
+    .indicator-mini strong {
+      display: block;
+      color: var(--blue-secondary);
+      font-size: 22px;
+      font-weight: var(--weight-black);
+      line-height: 1;
+    }
+    .indicator-mini span {
+      display: block;
+      color: var(--grey-text);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-bold);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-top: var(--space-2);
+    }
+
     /* ── SCORE GUIDE ────────────────────────────────────────────────── */
     .score-guide {
       display: grid;
@@ -900,6 +1018,9 @@
       main { padding: var(--space-5) var(--space-5); }
       .metrics-strip { grid-template-columns: repeat(3, 1fr); }
       .metric-card__value { font-size: 22px; }
+      .indicator-grid { grid-template-columns: repeat(2, 1fr); }
+      .indicator-layout { grid-template-columns: 1fr; }
+      .indicator-mini-grid { grid-template-columns: repeat(2, 1fr); }
       .hbar-label { width: 56px; font-size: 10px; }
       /* Agenda: score block menor */
       .agenda-card__score-value { font-size: var(--text-base); }
@@ -934,6 +1055,11 @@
       .metrics-strip { grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
       .metric-card { padding: var(--space-4); }
       .metric-card__value { font-size: 20px; }
+      .indicator-grid,
+      .indicator-mini-grid { grid-template-columns: 1fr; }
+      .indicator-card__value { font-size: 24px; }
+      .indicator-bar-row { grid-template-columns: 86px minmax(0, 1fr) 56px; }
+      .indicator-bar-row__label { font-size: 10px; }
 
       /* Tabs: scroll horizontal */
       .tabs { overflow-x: auto; gap: 0; padding-bottom: 2px; }
@@ -1110,7 +1236,8 @@
 
     <!-- ── TABS ──────────────────────────────────────────── -->
     <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('ranking', this)">Ranking de Equipes</button>
+      <button class="tab-btn active" onclick="switchTab('indicadores', this)">Indicadores</button>
+      <button class="tab-btn" onclick="switchTab('ranking', this)">Ranking de Equipes</button>
       <button class="tab-btn" onclick="switchTab('invisiveis', this)">Pacientes Invisíveis</button>
       <button class="tab-btn" onclick="switchTab('agenda', this)">Agenda do ACS</button>
       <button class="tab-btn" onclick="switchTab('score', this)">Entenda o Score</button>
@@ -1118,9 +1245,108 @@
     </div>
 
     <!-- ────────────────────────────────────────────────────────────────
+         TAB 0 — INDICADORES DA PLANILHA
+    ─────────────────────────────────────────────────────────────────── -->
+    <div class="tab-panel active" id="tab-indicadores">
+      <p class="section-label">00 — Matriz de Indicadores</p>
+      <h2 class="section-title">Dashboard baseado na planilha de indicadores</h2>
+      <p class="section-caption">Visão executiva organizada pelos blocos da planilha: população, equipes, visitas, pacientes e eventos clínicos.</p>
+
+      <div class="indicator-grid">
+        <div class="indicator-card">
+          <div class="indicator-card__label">População cadastrada</div>
+          <div class="indicator-card__value" id="ind-total-pacientes">—</div>
+          <div class="indicator-card__sub">base de pacientes anonimizados</div>
+        </div>
+        <div class="indicator-card indicator-card--warn">
+          <div class="indicator-card__label">Alto risco</div>
+          <div class="indicator-card__value" id="ind-alto-risco">—</div>
+          <div class="indicator-card__sub" id="ind-alto-risco-pct">—</div>
+        </div>
+        <div class="indicator-card indicator-card--alert">
+          <div class="indicator-card__label">Sem visita</div>
+          <div class="indicator-card__value" id="ind-sem-visita">—</div>
+          <div class="indicator-card__sub" id="ind-sem-visita-pct">—</div>
+        </div>
+        <div class="indicator-card indicator-card--ok">
+          <div class="indicator-card__label">Equipes</div>
+          <div class="indicator-card__value" id="ind-equipes">—</div>
+          <div class="indicator-card__sub">unidades/equipes monitoradas</div>
+        </div>
+      </div>
+
+      <div class="indicator-mini-grid">
+        <div class="indicator-mini">
+          <strong id="ind-visitas-total">—</strong>
+          <span>Visitas registradas</span>
+        </div>
+        <div class="indicator-mini">
+          <strong id="ind-visitas-30d">—</strong>
+          <span>Visitas nos últimos 30 dias</span>
+        </div>
+        <div class="indicator-mini">
+          <strong id="ind-urgencias">—</strong>
+          <span>Urgências e internações</span>
+        </div>
+      </div>
+
+      <div class="indicator-layout">
+        <div class="indicator-panel">
+          <div class="indicator-panel__title">Composição clínica por território</div>
+          <div id="ind-clinica-bars" class="indicator-bar-list"></div>
+        </div>
+        <div class="indicator-panel">
+          <div class="indicator-panel__title">Pacientes invisíveis</div>
+          <div id="ind-invisiveis-bars" class="indicator-bar-list"></div>
+        </div>
+      </div>
+
+      <div class="indicator-layout">
+        <div class="indicator-panel">
+          <div class="indicator-panel__title">Volume de visitas recentes</div>
+          <div id="ind-visitas-semana" class="indicator-bar-list"></div>
+        </div>
+        <div class="indicator-panel">
+          <div class="indicator-panel__title">Produtividade por ACS</div>
+          <div id="ind-top-acs" class="indicator-bar-list"></div>
+        </div>
+      </div>
+
+      <div class="indicator-layout">
+        <div class="indicator-panel">
+          <div class="indicator-panel__title">Eventos clínicos</div>
+          <div class="indicator-mini-grid" style="grid-template-columns:repeat(2,1fr);margin-bottom:0;">
+            <div class="indicator-mini"><strong id="ind-eventos-total">—</strong><span>Total de eventos</span></div>
+            <div class="indicator-mini"><strong id="ind-agendamentos">—</strong><span>Agendamentos</span></div>
+            <div class="indicator-mini"><strong id="ind-urg30">—</strong><span>Urgências 30 dias</span></div>
+            <div class="indicator-mini"><strong id="ind-urg-sem-visita">—</strong><span>Urg. sem visita prévia</span></div>
+          </div>
+        </div>
+        <div class="indicator-panel">
+          <div class="indicator-panel__title">Matriz da planilha</div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Bloco</th>
+                  <th>Indicador</th>
+                  <th>Valor</th>
+                  <th>Tipo</th>
+                </tr>
+              </thead>
+              <tbody id="ind-matriz-tbody">
+                <tr><td colspan="4" style="text-align:center;padding:var(--space-5);color:var(--grey-text);">Carregando...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ────────────────────────────────────────────────────────────────
          TAB 1 — RANKING DE EQUIPES
     ─────────────────────────────────────────────────────────────────── -->
-    <div class="tab-panel active" id="tab-ranking">
+    <div class="tab-panel" id="tab-ranking">
       <p class="section-label">01 — Cobertura</p>
       <h2 class="section-title">Ranking por Score de Pressão</h2>
       <p class="section-caption">Peso: 40% risco clínico + 40% sem visita + 20% urgência recente. Equipes com maior score precisam de atenção prioritária.</p>
@@ -1497,6 +1723,7 @@
   let state = {
     painel: [],
     invisiveis: { total: 0, por_categoria: {}, pacientes: [] },
+    indicadores: null,
     equipes: [],
     loaded: false,
   };
@@ -1545,12 +1772,13 @@
     document.getElementById('dashboard').style.opacity = '0.4';
 
     try {
-      const [root, painelData, invData, equipesData, riscoData] = await Promise.all([
+      const [root, painelData, invData, equipesData, riscoData, indicadoresData] = await Promise.all([
         apiFetch('/'),
         apiFetch('/gestao/painel'),
         apiFetch('/gestao/invisiveis'),
         apiFetch('/equipes'),
         apiFetch('/gestao/risco'),
+        apiFetch('/gestao/indicadores'),
       ]);
 
       document.getElementById('loading-count').textContent = fmt(root.pacientes_carregados);
@@ -1559,6 +1787,7 @@
 
       state.painel   = painelData;
       state.equipes  = equipesData.equipes;
+      state.indicadores = indicadoresData;
       state.loaded   = true;
 
       // Fetch full invisible list per team (use summary endpoint for overview)
@@ -1572,6 +1801,7 @@
       renderRanking(painelData);
       renderInvisiveis(invData);
       renderRisco(riscoData);
+      renderIndicadores(indicadoresData);
       renderScoreCalc();
 
       document.getElementById('total-patients-badge').textContent = fmt(root.pacientes_carregados) + ' pacientes';
@@ -1612,6 +1842,75 @@
     document.getElementById('m-crise').textContent = fmt(crise);
 
     document.getElementById('m-equipes').textContent = fmt(state.equipes.length);
+  }
+
+  /* ── indicadores ───────────────────────────────────────────────────── */
+  function renderSimpleBars(containerId, rows, valueKey, labelKey, colorFn) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    const max = Math.max(...rows.map(r => Number(r[valueKey] || 0)), 1);
+    el.innerHTML = rows.map((r, i) => {
+      const val = Number(r[valueKey] || 0);
+      const pct = Math.max(3, val / max * 100);
+      const color = colorFn ? colorFn(r, i) : '#004a80';
+      return `
+        <div class="indicator-bar-row">
+          <div class="indicator-bar-row__label">${r[labelKey]}</div>
+          <div class="indicator-bar-row__track">
+            <div class="indicator-bar-row__fill" style="width:${pct}%;background:${color};"></div>
+          </div>
+          <div class="indicator-bar-row__value">${fmt(val)}</div>
+        </div>`;
+    }).join('');
+  }
+
+  function renderIndicadores(data) {
+    if (!data) return;
+    const vg = data.visao_geral || {};
+    const visitas = data.visitas || {};
+    const eventos = data.eventos || {};
+    const invis = data.invisiveis || {};
+
+    document.getElementById('ind-total-pacientes').textContent = fmt(vg.total_pacientes || 0);
+    document.getElementById('ind-alto-risco').textContent = fmt(vg.alto_risco || 0);
+    document.getElementById('ind-alto-risco-pct').textContent = fmtPct(vg.pct_alto_risco || 0) + ' da população';
+    document.getElementById('ind-sem-visita').textContent = fmt(vg.sem_visita || 0);
+    document.getElementById('ind-sem-visita-pct').textContent = fmtPct(vg.pct_sem_visita || 0) + ' da população';
+    document.getElementById('ind-equipes').textContent = fmt(vg.total_equipes || 0);
+
+    document.getElementById('ind-visitas-total').textContent = fmt(visitas.total || 0);
+    document.getElementById('ind-visitas-30d').textContent = fmt(visitas.ultimos_30d || 0);
+    document.getElementById('ind-urgencias').textContent = fmt(eventos.urgencias || 0);
+    document.getElementById('ind-eventos-total').textContent = fmt(eventos.total || 0);
+    document.getElementById('ind-agendamentos').textContent = fmt(eventos.agendamentos || 0);
+    document.getElementById('ind-urg30').textContent = fmt(eventos.urgencias_30d || 0);
+    document.getElementById('ind-urg-sem-visita').textContent = fmt(eventos.urgencias_sem_visita_30d || 0);
+
+    renderSimpleBars(
+      'ind-clinica-bars',
+      data.composicao_clinica || [],
+      'total',
+      'grupo',
+      (_, i) => ['#004a80', '#00c0f4', '#fd7e14', '#0bb975', '#6f42c1', '#dc3545'][i % 6]
+    );
+
+    renderSimpleBars('ind-invisiveis-bars', [
+      { categoria: 'Crise sem vínculo', total: invis.crise_sem_vinculo || 0 },
+      { categoria: 'Alto risco', total: invis.alto_risco_sem_contato || 0 },
+      { categoria: 'Sem condição', total: invis.sem_condicao_especial || 0 },
+    ], 'total', 'categoria', (_, i) => ['#dc3545', '#fd7e14', '#004a80'][i]);
+
+    renderSimpleBars('ind-visitas-semana', visitas.por_semana || [], 'visitas', 'semana', () => '#0bb975');
+    renderSimpleBars('ind-top-acs', visitas.top_profissionais || [], 'visitas', 'profissional', () => '#004a80');
+
+    const tbody = document.getElementById('ind-matriz-tbody');
+    tbody.innerHTML = (data.matriz || []).map(row => `
+      <tr>
+        <td><strong>${row.bloco}</strong></td>
+        <td>${row.indicador}</td>
+        <td>${fmt(row.valor || 0)}</td>
+        <td><span class="badge ${row.tipo === 'Cruzamento' ? 'badge-cyan' : 'badge-primary'}">${row.tipo}</span></td>
+      </tr>`).join('');
   }
 
   /* ── ranking ────────────────────────────────────────────────────────── */
