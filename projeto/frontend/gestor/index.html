@@ -2464,7 +2464,10 @@
     if (idoso) scoreClinico += 15;
     if (vulneravel) scoreClinico += 10;
 
-    const deficit = num('calc-deficit');
+    const minimoVisitas = crianca ? 7 : gestacao ? 6 : (hipertenso || diabetico || idoso) ? 4 : 2;
+    const deficitManual = num('calc-deficit');
+    const semVisitaEfetivo = semVisita || criseSemVinculo;
+    const deficit = semVisitaEfetivo && deficitManual === 0 ? minimoVisitas : deficitManual;
     const scoreDeficit = deficit * 8;
     const scoreUrgencia =
       num('calc-urg30') * 25 +
@@ -2475,7 +2478,7 @@
 
     const altoRisco = gestacao || crianca || hipertenso || diabetico || idoso || vulneravel;
     let scoreBonus = 0;
-    if (semVisita && altoRisco) scoreBonus += 30;
+    if (semVisitaEfetivo && altoRisco) scoreBonus += 30;
     if (criseSemVinculo) scoreBonus += 50;
 
     const total = scoreClinico + scoreDeficit + scoreUrgencia + scoreAgendamento + scoreBonus;
@@ -2491,7 +2494,7 @@
 
     const rows = [
       ['Perfil clínico/social', scoreClinico],
-      [`Déficit de visitas (${deficit})`, scoreDeficit],
+      [`Déficit de visitas (${deficit}${semVisitaEfetivo && deficitManual === 0 ? ' auto' : ''})`, scoreDeficit],
       ['Urgências recentes', scoreUrgencia],
       ['Agendamento futuro', scoreAgendamento],
       ['Bônus invisível', scoreBonus],
