@@ -4,11 +4,38 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Inteligência no Território — Painel do Gestor | SMS Rio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <style>
+    @font-face {
+      font-family: 'Cera Pro';
+      src: url('assets/fonts/Cera_Pro_Light.otf') format('opentype');
+      font-weight: 300;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Cera Pro';
+      src: url('assets/fonts/Cera_Pro_Medium.otf') format('opentype');
+      font-weight: 400 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Cera Pro';
+      src: url('assets/fonts/Cera_Pro_Bold.otf') format('opentype');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Cera Pro';
+      src: url('assets/fonts/Cera_Pro_Black.otf') format('opentype');
+      font-weight: 800 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
     /* ── TOKENS (brand book) ──────────────────────────────────────────── */
     :root {
       --blue-primary:   #004a80;
@@ -1160,6 +1187,260 @@
       /* Mapa */
       #map-container { height: 260px; }
     }
+
+    /* ── SMS RIO DESIGN SYSTEM OVERRIDES (dashboard-acs) ─────────────── */
+    :root {
+      --font-body: 'Cera Pro', 'Segoe UI', Arial, sans-serif;
+      --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', ui-monospace, monospace;
+      --color-bg-page: #f5f6f8;
+      --color-bg-surface: #ededed;
+      --shadow-sm: 0 1px 3px rgba(0,74,128,.06);
+      --shadow-md: 0 4px 12px rgba(0,74,128,.15);
+      --shadow-lg: 0 8px 32px rgba(0,74,128,.20);
+    }
+    html,
+    body {
+      background: #f5f6f8;
+      font-family: var(--font-body);
+      color: var(--grey-dark);
+    }
+    .top-bar {
+      padding: 6px 32px;
+      background: var(--grey-bar);
+      color: rgba(255,255,255,.72);
+      letter-spacing: .14em;
+    }
+    .navbar {
+      padding: 14px 32px;
+      background: var(--blue-primary);
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 28px;
+      box-shadow: none;
+    }
+    .navbar__brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 0;
+    }
+    .navbar__brand-logo {
+      height: 44px;
+      width: auto;
+      display: block;
+      flex-shrink: 0;
+    }
+    .navbar__logo {
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+    .navbar__logo span { color: var(--green-accent); }
+    .navbar__sub,
+    .navbar__user {
+      font-size: 11px;
+      letter-spacing: .08em;
+    }
+    .navbar__avatar {
+      width: 38px;
+      height: 38px;
+      background: var(--green-accent);
+      border: none;
+      font-weight: 900;
+    }
+    .navbar__refresh {
+      border-radius: 4px;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.14);
+      letter-spacing: .1em;
+    }
+    .page-header {
+      background: #fff;
+      color: var(--grey-dark);
+      padding: 28px 32px 0;
+    }
+    .page-header__inner {
+      max-width: 1400px;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--grey-mid);
+      padding-bottom: 24px;
+    }
+    .page-header__eyebrow,
+    .section-label,
+    .metric-card__label,
+    .indicator-card__label,
+    .indicator-panel__title,
+    .filter-group label,
+    .agenda-card__score-label,
+    .score-component__head strong,
+    .score-calculator__title {
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .page-header__eyebrow {
+      color: var(--grey-text);
+      opacity: 1;
+    }
+    .page-header__title {
+      color: var(--blue-secondary);
+      font-size: 28px;
+      letter-spacing: 0;
+    }
+    .page-header__sub,
+    .page-header__ts {
+      color: var(--grey-text);
+      opacity: 1;
+    }
+    .page-header__badge {
+      border-radius: 4px;
+      border-color: var(--grey-mid);
+      background: #fff;
+      color: var(--blue-secondary);
+    }
+    main {
+      max-width: 1400px;
+      padding: 28px 32px 64px;
+    }
+    .tabs {
+      background: var(--blue-primary);
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+      padding: 0 10px;
+      gap: 4px;
+      box-shadow: var(--shadow-sm);
+    }
+    .tab-btn {
+      color: rgba(255,255,255,.72);
+      border-bottom: 3px solid transparent;
+      padding: 14px 16px;
+      margin-bottom: 0;
+      border-radius: 4px 4px 0 0;
+      letter-spacing: .08em;
+    }
+    .tab-btn:hover {
+      color: #fff;
+      background: rgba(255,255,255,.06);
+    }
+    .tab-btn.active {
+      color: #fff;
+      border-bottom-color: var(--green-accent);
+      background: rgba(255,255,255,.06);
+    }
+    .tab-panel {
+      background: #fff;
+      border: 1px solid var(--grey-mid);
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      padding: 24px 26px;
+      box-shadow: var(--shadow-sm);
+    }
+    .metrics-strip {
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+    .metric-card,
+    .indicator-card,
+    .indicator-panel,
+    .inv-card,
+    .agenda-card,
+    .score-component,
+    .score-example,
+    .agenda-filter-bar,
+    .table-wrap,
+    .score-calculator {
+      border-radius: 8px;
+      border-color: var(--grey-mid);
+      box-shadow: var(--shadow-sm);
+    }
+    .metric-card {
+      border-left: 3px solid transparent;
+      border-top: none;
+      padding: 18px 20px;
+    }
+    .metric-card--alert { border-left-color: #dc3545; }
+    .metric-card--warn { border-left-color: #fd7e14; }
+    .metric-card--ok { border-left-color: #28a745; }
+    .metric-card__value,
+    .indicator-card__value,
+    .inv-card__num,
+    .score-result__total {
+      letter-spacing: -0.02em;
+      color: var(--blue-secondary);
+    }
+    .section-title,
+    .indicator-panel__title,
+    .score-component__head strong {
+      color: var(--blue-secondary);
+    }
+    .btn,
+    .navbar__refresh,
+    .tab-btn {
+      transition: background .15s, color .15s, border-color .15s, box-shadow .15s;
+    }
+    .btn,
+    .filter-group select,
+    .filter-group input {
+      border-radius: 4px;
+      font-family: var(--font-body);
+    }
+    .btn-cta,
+    .btn-primary {
+      background: var(--blue-primary);
+    }
+    .btn-cta:hover,
+    .btn-primary:hover {
+      background: var(--blue-dark);
+    }
+    .badge,
+    .tag {
+      letter-spacing: .08em;
+      border-radius: var(--radius-pill);
+    }
+    .data-table th {
+      background: #fafafa;
+      color: #6b6b6b;
+      letter-spacing: .12em;
+    }
+    .data-table td {
+      border-bottom-color: var(--grey-card);
+    }
+    .hbar-track,
+    .dist-row__track,
+    .indicator-bar-row__track,
+    .pressure-bar__track {
+      background: var(--grey-card);
+      border-radius: 4px;
+    }
+    .hbar-fill,
+    .dist-row__fill,
+    .indicator-bar-row__fill,
+    .pressure-bar__fill {
+      border-radius: 4px;
+    }
+    .agenda-card__order-col {
+      background: var(--blue-primary);
+      border-radius: 8px 0 0 8px;
+    }
+    #map-container {
+      border-radius: 8px;
+      box-shadow: var(--shadow-sm);
+    }
+    footer {
+      background: var(--blue-dark);
+      margin-top: 0;
+    }
+    @media (max-width: 768px) {
+      .navbar {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 14px 16px;
+      }
+      .navbar__brand-logo { height: 34px; }
+      .page-header { padding: 24px 16px 0; }
+      main { padding: 20px 16px 48px; }
+      .tab-panel { padding: 18px 16px; }
+    }
   </style>
 </head>
 <body>
@@ -1185,9 +1466,12 @@
 
 <!-- ── NAVBAR ────────────────────────────────────────────────────────── -->
 <nav class="navbar">
-  <div>
-    <div class="navbar__logo">Inteligência no <span>Território</span></div>
-    <div class="navbar__sub">Painel do Gestor · SMS Rio</div>
+  <div class="navbar__brand">
+    <img class="navbar__brand-logo" src="assets/brand/logo-prefeitura-saude.png" alt="Prefeitura do Rio — Saúde" />
+    <div>
+      <div class="navbar__logo">Inteligência no <span>Território</span></div>
+      <div class="navbar__sub">Painel do Gestor · SMS Rio</div>
+    </div>
   </div>
   <div class="navbar__actions">
     <button class="navbar__refresh" onclick="recarregarTudo()">&#8635; Recalcular</button>
