@@ -1,0 +1,240 @@
+/* ============================================================
+   SMS Rio — ACS Inteligente · Colors + Type tokens
+   Source: uploads/brandbook.html (saude.prefeitura.rio palette)
+   ============================================================ */
+
+/* ---------- FONT FACE ----------
+   Cera Pro — the official SMS Rio typeface, licensed and shipped
+   with this design system (fonts/). Mono falls through to system.
+   NOTE: no "Regular 400" .otf was provided — Medium (500) is used
+   as the body weight stand-in. Light (300) and Bold (700) are
+   shipped natively. Flag this if the licensor sends a Regular.
+*/
+@font-face {
+  font-family: 'Cera Pro';
+  src: url('fonts/Cera_Pro_Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cera Pro';
+  src: url('fonts/Cera_Pro_Medium.otf') format('opentype');
+  font-weight: 400 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cera Pro';
+  src: url('fonts/Cera_Pro_Regular_Italic.otf') format('opentype');
+  font-weight: 400 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cera Pro';
+  src: url('fonts/Cera_Pro_Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cera Pro';
+  src: url('fonts/Cera_Pro_Black.otf') format('opentype');
+  font-weight: 800 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cera Pro';
+  src: url('fonts/Cera_Pro_Black_Italic.otf') format('opentype');
+  font-weight: 800 900;
+  font-style: italic;
+  font-display: swap;
+}
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+
+:root {
+  /* =========================================================
+     CORE PALETTE — extracted from saude.prefeitura.rio
+     ========================================================= */
+  --blue-primary:   #004a80;  /* header, navbar, main brand */
+  --blue-secondary: #00508a;  /* section titles, access areas */
+  --blue-dark:      #003660;  /* footer, hover depth */
+  --blue-light:     #1863dc;  /* CTA buttons */
+  --blue-cta-hover: #1253c2;
+
+  --cyan-accent:    #00c0f4;  /* highlights, badges, scheduled */
+  --green-accent:   #0bb975;  /* links on dark bg, success */
+
+  /* Priority / status (clinical) */
+  --status-urgente: #dc3545;  /* P1 — emergency */
+  --status-alto:    #fd7e14;  /* P2 — high risk */
+  --status-medio:   #ffc107;  /* P3 — medium */
+  --status-rotina:  #28a745;  /* P4 — routine */
+
+  /* Neutrals */
+  --grey-bar:    #363636;
+  --grey-card:   #ededed;
+  --grey-mid:    #cac7c7;
+  --grey-text:   #333333;
+  --grey-dark:   #181818;
+  --white:       #ffffff;
+
+  /* =========================================================
+     SEMANTIC TOKENS
+     ========================================================= */
+  --fg-1: var(--grey-dark);     /* highest-contrast text */
+  --fg-2: var(--grey-text);     /* body text */
+  --fg-3: #6b6b6b;              /* muted / captions */
+  --fg-inverse: var(--white);
+  --fg-link: var(--blue-secondary);
+  --fg-link-on-dark: var(--green-accent);
+
+  --bg-page:    var(--white);
+  --bg-surface: var(--grey-card);
+  --bg-header:  var(--blue-primary);
+  --bg-bar:     var(--grey-bar);
+  --bg-footer:  var(--blue-dark);
+
+  --border-color: var(--grey-mid);
+  --border-strong: #a8a4a4;
+
+  --cta:        var(--blue-light);
+  --cta-hover:  var(--blue-cta-hover);
+
+  /* =========================================================
+     TYPOGRAPHY
+     ========================================================= */
+  --font-display: 'Cera Pro', 'Segoe UI', Arial, sans-serif;
+  --font-body:    'Cera Pro', 'Segoe UI', Arial, sans-serif;
+  --font-mono:    'JetBrains Mono', 'SF Mono', 'Fira Code', ui-monospace, monospace;
+
+  --text-xs:   11px;
+  --text-sm:   13px;
+  --text-base: 16px;
+  --text-md:   20px;
+  --text-lg:   28px;
+  --text-xl:   40px;
+  --text-2xl:  52px;
+
+  --weight-regular: 400;
+  --weight-medium:  500;
+  --weight-bold:    700;
+  --weight-black:   900;
+
+  --leading-tight:  1.2;
+  --leading-normal: 1.5;
+  --leading-loose:  1.75;
+
+  --tracking-normal: 0;
+  --tracking-wide:   0.08em;
+  --tracking-wider:  0.15em;
+
+  /* =========================================================
+     SPACING — 8pt scale w/ a 4pt baseline tap
+     ========================================================= */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
+  /* =========================================================
+     RADIUS — small + tight; institutional, not playful
+     ========================================================= */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   16px;
+  --radius-pill: 999px;
+
+  /* =========================================================
+     SHADOWS — tinted blue, never neutral
+     ========================================================= */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 4px 12px rgba(0, 74, 128, 0.15);
+  --shadow-lg: 0 8px 32px rgba(0, 74, 128, 0.20);
+}
+
+/* ============================================================
+   SEMANTIC TYPOGRAPHY UTILITIES
+   ============================================================ */
+.t-hero {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-black);
+  line-height: var(--leading-tight);
+  letter-spacing: -0.01em;
+  color: var(--blue-secondary);
+}
+.t-h1 {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-black);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--blue-secondary);
+}
+.t-h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-black);
+  line-height: var(--leading-tight);
+  color: var(--blue-secondary);
+}
+.t-h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+  color: var(--grey-dark);
+}
+.t-body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-loose);
+  color: var(--grey-text);
+}
+.t-small {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-normal);
+  color: var(--grey-text);
+}
+.t-label,
+.t-eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  color: var(--grey-text);
+}
+.t-nav {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--white);
+}
+.t-mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--grey-text);
+}
+
+/* ============================================================
+   BASE NORMALIZATION
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+html { font-family: var(--font-body); font-size: var(--text-base); color: var(--fg-1); background: var(--bg-page); }
+body { line-height: var(--leading-normal); margin: 0; }
+a    { color: var(--fg-link); text-decoration: none; }

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="../ui_kits/gestor-dashboard/kit.css" />
+<style> body { margin: 0; padding: 24px; background: #fff; } .wrap { display: grid; gap: 14px; } </style></head>
+<body>
+  <div class="wrap">
+    <div class="gst-hist">
+      <div class="gst-hist__row">
+        <span class="gst-hist__band" style="color:#9b1c28;"><span class="gst-hist__dot" style="background:#dc3545"></span>CRÍTICO</span>
+        <div class="gst-hist__track"><div class="gst-hist__fill" style="width: 24%; background:#dc3545;"></div></div>
+        <span class="gst-hist__n">184</span>
+      </div>
+      <div class="gst-hist__row">
+        <span class="gst-hist__band" style="color:#8d4a0c;"><span class="gst-hist__dot" style="background:#fd7e14"></span>URGENTE</span>
+        <div class="gst-hist__track"><div class="gst-hist__fill" style="width: 56%; background:#fd7e14;"></div></div>
+        <span class="gst-hist__n">422</span>
+      </div>
+      <div class="gst-hist__row">
+        <span class="gst-hist__band" style="color:#856404;"><span class="gst-hist__dot" style="background:#ffc107"></span>ATENÇÃO</span>
+        <div class="gst-hist__track"><div class="gst-hist__fill" style="width: 100%; background:#ffc107;"></div></div>
+        <span class="gst-hist__n">731</span>
+      </div>
+      <div class="gst-hist__row">
+        <span class="gst-hist__band" style="color:#1a6630;"><span class="gst-hist__dot" style="background:#28a745"></span>ROTINA</span>
+        <div class="gst-hist__track"><div class="gst-hist__fill" style="width: 90%; background:#28a745;"></div></div>
+        <span class="gst-hist__n">660</span>
+      </div>
+    </div>
+    <div class="gst-legend">
+      <div class="gst-legend__item"><span class="gst-legend__dot" style="background:#dc3545"></span><span class="gst-legend__label">CRÍTICO</span><span class="gst-legend__range">≥ 80</span></div>
+      <div class="gst-legend__item"><span class="gst-legend__dot" style="background:#fd7e14"></span><span class="gst-legend__label">URGENTE</span><span class="gst-legend__range">50–79</span></div>
+      <div class="gst-legend__item"><span class="gst-legend__dot" style="background:#ffc107"></span><span class="gst-legend__label">ATENÇÃO</span><span class="gst-legend__range">20–49</span></div>
+      <div class="gst-legend__item"><span class="gst-legend__dot" style="background:#28a745"></span><span class="gst-legend__label">ROTINA</span><span class="gst-legend__range">&lt; 20</span></div>
+    </div>
+  </div>
+</body></html>

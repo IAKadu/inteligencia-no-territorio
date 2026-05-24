@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  body { margin: 0; padding: 22px; background: #fff; font-family: var(--font-body); }
+  .card { background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 18px 20px; box-shadow: 0 1px 3px rgba(0,0,0,.08); border-left: 4px solid #dc3545; max-width: 560px; }
+  .head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+  .id { font-family: var(--font-mono); font-size: 10px; color: #777; }
+  .name { font-weight: 700; font-size: 16px; color: #181818; margin-top: 2px; }
+  .badge-danger { background: rgba(220,53,69,.12); color: #b02a37; padding: 4px 10px; border-radius: 999px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+  .reason { font-size: 13px; color: #333; margin: 8px 0 12px; line-height: 1.55; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { padding: 3px 10px; border-radius: 999px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+  .tag-hiper { background: rgba(0,192,244,.15); color: #0072a3; }
+  .tag-emerg { background: rgba(220,53,69,.12); color: #9b1c28; }
+  .tag-vuln { background: rgba(255,193,7,.2); color: #856404; }
+</style></head>
+<body>
+  <div class="card">
+    <div class="head">
+      <div>
+        <div class="id">Paciente #a3f7…b812 · Equipe #3c1d</div>
+        <div class="name">Paciente A</div>
+      </div>
+      <span class="badge-danger">Urgente</span>
+    </div>
+    <p class="reason">Ida à urgência há 3 dias. Sem visita há 14 dias. Hipertensa.</p>
+    <div class="tags">
+      <span class="tag tag-hiper">Hipertenso</span>
+      <span class="tag tag-emerg">Emergência recente</span>
+      <span class="tag tag-vuln">Vulnerável</span>
+    </div>
+  </div>
+</body></html>

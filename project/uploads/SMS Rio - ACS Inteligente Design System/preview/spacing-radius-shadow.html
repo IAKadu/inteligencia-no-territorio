@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  body { margin: 0; padding: 24px 28px; background: #f5f5f5; }
+  .row { display: flex; gap: 28px; align-items: center; }
+  .item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .swatch { background: #fff; border: 1px solid #cac7c7; padding: 14px 22px; font-size: 13px; font-weight: 700; color: #181818; }
+  .name { font-family: var(--font-mono); font-size: 10px; color: #555; }
+  .shadow1 { box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+  .shadow2 { box-shadow: 0 4px 12px rgba(0,74,128,.15); }
+  .shadow3 { box-shadow: 0 8px 32px rgba(0,74,128,.20); }
+  .r-sm { border-radius: 4px; }
+  .r-md { border-radius: 8px; }
+  .r-lg { border-radius: 16px; }
+  .r-pill { border-radius: 999px; }
+</style></head>
+<body>
+  <div class="row">
+    <div class="item"><div class="swatch r-sm">4px</div><span class="name">radius-sm</span></div>
+    <div class="item"><div class="swatch r-md">8px</div><span class="name">radius-md</span></div>
+    <div class="item"><div class="swatch r-lg">16px</div><span class="name">radius-lg</span></div>
+    <div class="item"><div class="swatch r-pill">pill</div><span class="name">radius-pill</span></div>
+    <div class="item" style="margin-left:24px"><div class="swatch r-sm shadow1">sm</div><span class="name">shadow-sm</span></div>
+    <div class="item"><div class="swatch r-sm shadow2">md</div><span class="name">shadow-md</span></div>
+    <div class="item"><div class="swatch r-sm shadow3">lg</div><span class="name">shadow-lg</span></div>
+  </div>
+</body></html>

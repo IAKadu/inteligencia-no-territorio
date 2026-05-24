@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ACS Inteligente — SMS Rio</title>
+  <link rel="stylesheet" href="../../colors_and_type.css" />
+  <link rel="stylesheet" href="kit.css" />
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="Primitives.jsx"></script>
+<script type="text/babel" src="PatientCard.jsx"></script>
+<script type="text/babel" src="Workspace.jsx"></script>
+
+<script type="text/babel">
+const { useState, useMemo } = React;
+
+function App() {
+  const [filter, setFilter] = useState('all');
+  const [selectedId, setSelectedId] = useState('a3f7b812');
+  const [done, setDone] = useState(new Set());
+  const [query, setQuery] = useState('');
+
+  const all = SAMPLE_PATIENTS;
+  const counts = {
+    all: all.length,
+    p1: all.filter(p => p.priority === 1).length,
+    p2: all.filter(p => p.priority === 2).length,
+    p3: all.filter(p => p.priority === 3).length,
+    p4: all.filter(p => p.priority === 4).length,
+  };
+  const filtered = useMemo(() => {
+    let xs = all;
+    if (filter !== 'all') {
+      const lvl = Number(filter.slice(1));
+      xs = xs.filter(p => p.priority === lvl);
+    }
+    if (query.trim()) {
+      const q = query.toLowerCase();
+      xs = xs.filter(p =>
+        p.name.toLowerCase().includes(q) ||
+        p.address.toLowerCase().includes(q) ||
+        p.tags.some(t => t.label.toLowerCase().includes(q))
+      );
+    }
+    return xs;
+  }, [filter, query]);
+
+  const selected = all.find(p => p.id === selectedId);
+
+  function handleStart(p) {
+    setDone(prev => {
+      const next = new Set(prev);
+      next.add(p.id);
+      return next;
+    });
+    // advance to next undone patient
+    const idx = all.findIndex(x => x.id === p.id);
+    for (let i = 1; i < all.length; i++) {
+      const cand = all[(idx + i) % all.length];
+      if (!done.has(cand.id) && cand.id !== p.id) {
+        setSelectedId(cand.id);
+        break;
+      }
+    }
+  }
+
+  return (
+    <div data-screen-label="01 ACS Workspace">
+      <TopUtilityBar />
+      <MainNav user={{ name: 'Ana Souza' }} />
+
+      <div className="acs-shell">
+        <FiltersSidebar value={filter} onChange={setFilter} counts={counts} />
+
+        <main className="acs-main">
+          <DayStrip done={done.size} total={all.length} />
+
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 22, gap: 16 }}>
+            <SearchInput value={query} onChange={setQuery} />
+            <div style={{ display: 'flex', gap: 8 }}>
+              <Button variant="secondary" size="sm">Exportar rota</Button>
+              <Button variant="primary" size="sm">Abrir mapa</Button>
+            </div>
+          </div>
+
+          <div className="acs-workspace">
+            <TodayVisits visits={filtered} onOpen={p => setSelectedId(p.id)} doneIds={done} />
+            <PatientFocus patient={selected} onStart={handleStart} />
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

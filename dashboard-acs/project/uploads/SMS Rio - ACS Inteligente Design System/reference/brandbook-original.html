@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BrandBook — ACS Inteligente | SMS Rio</title>
+  <style>
+    /* ─────────────────────────────────────────
+       TOKENS
+    ───────────────────────────────────────── */
+    :root {
+      /* Core palette */
+      --blue-primary:   #004a80;   /* Header, navbar, main brand */
+      --blue-secondary: #00508a;   /* Section titles, access areas */
+      --blue-dark:      #003660;   /* Footer, depth layer */
+      --blue-light:     #1863dc;   /* CTA buttons, action elements */
+      --cyan-accent:    #00c0f4;   /* Highlights, badges */
+      --green-accent:   #0bb975;   /* Links on dark bg, success states */
+
+      /* Neutrals */
+      --grey-bar:       #363636;   /* Top utility bar */
+      --grey-card:      #ededed;   /* Card / tile backgrounds */
+      --grey-mid:       #cac7c7;   /* Borders, dividers */
+      --grey-text:      #333333;   /* Body copy */
+      --grey-dark:      #181818;   /* High-contrast text */
+      --white:          #ffffff;
+
+      /* Semantic */
+      --color-text-primary:   var(--grey-dark);
+      --color-text-secondary: var(--grey-text);
+      --color-text-inverse:   var(--white);
+      --color-text-link:      var(--blue-secondary);
+      --color-text-link-dark: var(--green-accent);
+      --color-bg-page:        var(--white);
+      --color-bg-surface:     var(--grey-card);
+      --color-bg-header:      var(--blue-primary);
+      --color-bg-bar:         var(--grey-bar);
+      --color-bg-footer:      var(--blue-dark);
+      --color-border:         var(--grey-mid);
+      --color-cta:            var(--blue-light);
+      --color-cta-hover:      #1253c2;
+
+      /* Typography */
+      --font-display: 'Cera Pro', 'Segoe UI', Arial, sans-serif;
+      --font-body:    'Cera Pro', 'Segoe UI', Arial, sans-serif;
+
+      --text-xs:   11px;
+      --text-sm:   13px;
+      --text-base: 16px;
+      --text-md:   20px;
+      --text-lg:   28px;
+      --text-xl:   40px;
+      --text-2xl:  52px;
+
+      --weight-regular: 400;
+      --weight-bold:    700;
+      --weight-black:   900;
+
+      --leading-tight:  1.2;
+      --leading-normal: 1.5;
+      --leading-loose:  1.75;
+
+      --tracking-normal: 0;
+      --tracking-wide:   0.08em;
+      --tracking-wider:  0.15em;
+
+      /* Spacing */
+      --space-1:  4px;
+      --space-2:  8px;
+      --space-3:  12px;
+      --space-4:  16px;
+      --space-5:  24px;
+      --space-6:  32px;
+      --space-7:  48px;
+      --space-8:  64px;
+      --space-9:  96px;
+
+      /* Radius */
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 16px;
+      --radius-pill: 999px;
+
+      /* Shadows */
+      --shadow-sm:  0 1px 3px rgba(0,0,0,.12);
+      --shadow-md:  0 4px 12px rgba(0,74,128,.15);
+      --shadow-lg:  0 8px 32px rgba(0,74,128,.20);
+    }
+
+    /* ─────────────────────────────────────────
+       RESET & BASE
+    ───────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: var(--text-base); font-family: var(--font-body); color: var(--color-text-primary); background: var(--color-bg-page); }
+    body { line-height: var(--leading-normal); }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+
+    /* ─────────────────────────────────────────
+       LAYOUT
+    ───────────────────────────────────────── */
+    .bb-header {
+      background: var(--blue-primary);
+      color: var(--white);
+      padding: var(--space-7) var(--space-8);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: var(--space-5);
+    }
+    .bb-header__eyebrow {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      opacity: .7;
+      margin-bottom: var(--space-2);
+    }
+    .bb-header__title {
+      font-size: var(--text-2xl);
+      font-weight: var(--weight-black);
+      line-height: var(--leading-tight);
+      letter-spacing: -0.01em;
+    }
+    .bb-header__sub {
+      font-size: var(--text-md);
+      opacity: .8;
+      margin-top: var(--space-2);
+    }
+    .bb-header__badge {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.25);
+      padding: var(--space-3) var(--space-5);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .bb-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--grey-bar);
+      display: flex;
+      gap: 2px;
+      padding: 0 var(--space-6);
+      overflow-x: auto;
+    }
+    .bb-nav a {
+      padding: var(--space-3) var(--space-5);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      color: rgba(255,255,255,.65);
+      transition: color .15s;
+      white-space: nowrap;
+    }
+    .bb-nav a:hover { color: var(--white); }
+
+    main { max-width: 1200px; margin: 0 auto; padding: var(--space-8) var(--space-6); }
+
+    .bb-section {
+      margin-bottom: var(--space-9);
+    }
+    .bb-section__label {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      color: var(--blue-primary);
+      margin-bottom: var(--space-2);
+    }
+    .bb-section__title {
+      font-size: var(--text-xl);
+      font-weight: var(--weight-black);
+      color: var(--blue-secondary);
+      margin-bottom: var(--space-5);
+      line-height: var(--leading-tight);
+    }
+    .bb-section__desc {
+      font-size: var(--text-base);
+      color: var(--color-text-secondary);
+      max-width: 640px;
+      line-height: var(--leading-loose);
+      margin-bottom: var(--space-7);
+    }
+    .bb-divider {
+      border: none;
+      border-top: 1px solid var(--color-border);
+      margin-bottom: var(--space-7);
+    }
+
+    /* ─────────────────────────────────────────
+       COLOR PALETTE
+    ───────────────────────────────────────── */
+    .bb-palette {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: var(--space-5);
+    }
+    .bb-swatch {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .bb-swatch__block {
+      height: 100px;
+    }
+    .bb-swatch__info {
+      padding: var(--space-3) var(--space-4);
+      background: var(--white);
+      border-top: 1px solid var(--color-border);
+    }
+    .bb-swatch__name {
+      font-weight: var(--weight-bold);
+      font-size: var(--text-sm);
+      color: var(--grey-dark);
+    }
+    .bb-swatch__hex {
+      font-size: var(--text-xs);
+      color: var(--grey-text);
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      margin-top: 2px;
+    }
+    .bb-swatch__use {
+      font-size: var(--text-xs);
+      color: var(--grey-text);
+      margin-top: var(--space-1);
+    }
+
+    .bb-palette-group { margin-bottom: var(--space-7); }
+    .bb-palette-group__title {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-bold);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wide);
+      color: var(--grey-text);
+      margin-bottom: var(--space-4);
+    }
+
+    /* ─────────────────────────────────────────
+       TYPOGRAPHY
+    ───────────────────────────────────────── */
+    .bb-type-specimen {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin-bottom: var(--space-5);
+    }
+    .bb-type-specimen__preview {
+      padding: var(--space-6) var(--space-6) var(--space-5);
+      border-bottom: 1px solid var(--color-border);
+      background: var(--white);
+    }
+    .bb-type-specimen__meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0;
+      background: var(--grey-card);
+    }
+    .bb-type-specimen__meta-item {
+      padding: var(--space-3) var(--space-4);
+      border-right: 1px solid var(--color-border);
+    }
+    .bb-type-specimen__meta-item:last-child { border-right: none; }
+    .bb-type-meta-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      font-weight: var(--weight-bold);
+      color: var(--grey-text);
+    }
+    .bb-type-meta-value {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-bold);
+      color: var(--grey-dark);
+      margin-top: 2px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+    }
+
+    /* Type styles */
+    .t-hero    { font-size: var(--text-2xl); font-weight: var(--weight-black); line-height: var(--leading-tight); color: var(--blue-secondary); }
+    .t-h1      { font-size: var(--text-xl);  font-weight: var(--weight-black); line-height: var(--leading-tight); color: var(--blue-secondary); text-transform: uppercase; letter-spacing: var(--tracking-wide); }
+    .t-h2      { font-size: var(--text-lg);  font-weight: var(--weight-black); line-height: var(--leading-tight); color: var(--blue-secondary); }
+    .t-h3      { font-size: var(--text-md);  font-weight: var(--weight-bold);  line-height: var(--leading-tight); color: var(--grey-dark); }
+    .t-body    { font-size: var(--text-base); font-weight: var(--weight-regular); line-height: var(--leading-loose); color: var(--grey-text); }
+    .t-small   { font-size: var(--text-sm);  font-weight: var(--weight-regular); color: var(--grey-text); }
+    .t-label   { font-size: var(--text-xs);  font-weight: var(--weight-bold); text-transform: uppercase; letter-spacing: var(--tracking-wider); color: var(--grey-text); }
+    .t-nav     { font-size: var(--text-sm);  font-weight: var(--weight-bold); text-transform: uppercase; letter-spacing: var(--tracking-wide); color: var(--white); }
+    .t-card    { font-size: var(--text-sm);  font-weight: var(--weight-bold); text-transform: uppercase; letter-spacing: var(--tracking-wide); color: var(--grey-dark); }
+
+    /* ─────────────────────────────────────────
+       COMPONENTS
+    ───────────────────────────────────────── */
+    .bb-components { display: flex; flex-direction: column; gap: var(--space-8); }
+    .bb-comp-group { }
+    .bb-comp-group__title {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-bold);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wide);
+      color: var(--grey-text);
+      margin-bottom: var(--space-5);
+      padding-bottom: var(--space-2);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .bb-comp-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-4);
+      align-items: center;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-3) var(--space-5);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all .15s;
+      font-family: var(--font-body);
+    }
+    .btn-primary   { background: var(--blue-primary); color: var(--white); }
+    .btn-primary:hover { background: var(--blue-dark); }
+    .btn-secondary { background: transparent; border-color: var(--blue-primary); color: var(--blue-primary); }
+    .btn-secondary:hover { background: var(--blue-primary); color: var(--white); }
+    .btn-cta       { background: var(--color-cta); color: var(--white); }
+    .btn-cta:hover { background: var(--color-cta-hover); }
+    .btn-green     { background: var(--green-accent); color: var(--white); }
+    .btn-sm { padding: var(--space-2) var(--space-4); font-size: var(--text-xs); }
+    .btn-lg { padding: var(--space-4) var(--space-7); font-size: var(--text-base); }
+
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px var(--space-3);
+      border-radius: var(--radius-pill);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+    }
+    .badge-primary  { background: rgba(0,74,128,.12); color: var(--blue-primary); }
+    .badge-green    { background: rgba(11,185,117,.15); color: #087a52; }
+    .badge-cyan     { background: rgba(0,192,244,.15); color: #007fa5; }
+    .badge-warning  { background: rgba(255,193,7,.2); color: #856404; }
+    .badge-danger   { background: rgba(220,53,69,.12); color: #b02a37; }
+
+    /* Cards */
+    .card {
+      background: var(--grey-card);
+      border-radius: var(--radius-sm);
+      padding: var(--space-5);
+      transition: box-shadow .15s;
+    }
+    .card:hover { box-shadow: var(--shadow-md); }
+    .card-title {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-bold);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wide);
+      color: var(--grey-dark);
+      text-align: center;
+      line-height: var(--leading-normal);
+    }
+    .card-service {
+      background: var(--grey-card);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 90px;
+      padding: var(--space-4);
+      text-align: center;
+      cursor: pointer;
+      transition: box-shadow .15s, background .15s;
+    }
+    .card-service:hover { background: var(--white); box-shadow: var(--shadow-md); }
+
+    /* Priority card — specific to ACS app */
+    .card-patient {
+      background: var(--white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      box-shadow: var(--shadow-sm);
+    }
+    .card-patient__header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-3); }
+    .card-patient__id { font-size: var(--text-xs); color: var(--grey-text); font-family: 'SF Mono', monospace; }
+    .card-patient__name { font-weight: var(--weight-bold); font-size: var(--text-base); margin-bottom: var(--space-1); }
+    .card-patient__tags { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
+
+    /* Priority levels */
+    .priority-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 4px;
+    }
+    .priority-1 { background: #dc3545; }   /* Urgente */
+    .priority-2 { background: #fd7e14; }   /* Alto */
+    .priority-3 { background: #ffc107; }   /* Médio */
+    .priority-4 { background: #28a745; }   /* Rotina */
+
+    .priority-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius-sm);
+      margin-bottom: var(--space-2);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-bold);
+    }
+    .priority-row.p1 { background: rgba(220,53,69,.1); color: #9b1c28; }
+    .priority-row.p2 { background: rgba(253,126,20,.1); color: #8d4a0c; }
+    .priority-row.p3 { background: rgba(255,193,7,.12); color: #856404; }
+    .priority-row.p4 { background: rgba(40,167,69,.1); color: #1a6630; }
+
+    /* Navbar preview */
+    .navbar-preview {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+    }
+    .navbar-preview__bar {
+      background: var(--grey-bar);
+      padding: var(--space-2) var(--space-5);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      color: rgba(255,255,255,.7);
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+    .navbar-preview__main {
+      background: var(--blue-primary);
+      padding: var(--space-4) var(--space-5);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .navbar-preview__logo {
+      font-size: var(--text-md);
+      font-weight: var(--weight-black);
+      color: var(--white);
+    }
+    .navbar-preview__logo span { color: var(--green-accent); }
+    .navbar-preview__links {
+      display: flex;
+      gap: var(--space-5);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      color: rgba(255,255,255,.85);
+    }
+
+    /* Input / Search */
+    .input-search {
+      display: flex;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: var(--white);
+      max-width: 400px;
+    }
+    .input-search input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: var(--space-3) var(--space-4);
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      color: var(--grey-dark);
+      background: transparent;
+    }
+    .input-search__btn {
+      background: var(--blue-primary);
+      border: none;
+      padding: var(--space-3) var(--space-4);
+      color: var(--white);
+      cursor: pointer;
+      font-size: var(--text-base);
+    }
+
+    /* Tag */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px var(--space-3);
+      border-radius: var(--radius-pill);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-bold);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      gap: 4px;
+    }
+    .tag-hipertenso   { background: rgba(0,192,244,.15); color: #0072a3; }
+    .tag-diabetico    { background: rgba(253,126,20,.15); color: #8d4a0c; }
+    .tag-gestante     { background: rgba(232,62,140,.15); color: #9d1f62; }
+    .tag-vulneravel   { background: rgba(255,193,7,.2);   color: #856404; }
+    .tag-emergencia   { background: rgba(220,53,69,.12);  color: #9b1c28; }
+
+    /* ─────────────────────────────────────────
+       SPACING SECTION
+    ───────────────────────────────────────── */
+    .spacing-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: var(--space-4); }
+    .spacing-item { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-2); }
+    .spacing-block { background: var(--blue-primary); border-radius: var(--radius-sm); opacity: .3; }
+    .spacing-label { font-size: var(--text-xs); font-family: monospace; color: var(--grey-text); }
+    .spacing-val   { font-size: var(--text-xs); font-weight: var(--weight-bold); color: var(--grey-dark); }
+
+    /* ─────────────────────────────────────────
+       ICONS SECTION
+    ───────────────────────────────────────── */
+    .icon-grid { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+    .icon-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-4);
+      background: var(--grey-card);
+      border-radius: var(--radius-md);
+      min-width: 80px;
+      text-align: center;
+    }
+    .icon-item svg { width: 24px; height: 24px; color: var(--blue-primary); }
+    .icon-item span { font-size: 10px; color: var(--grey-text); font-weight: var(--weight-bold); text-transform: uppercase; letter-spacing: .04em; }
+
+    /* ─────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────── */
+    .bb-footer {
+      background: var(--blue-dark);
+      color: rgba(255,255,255,.7);
+      padding: var(--space-7) var(--space-8);
+      text-align: center;
+      font-size: var(--text-sm);
+      margin-top: var(--space-9);
+    }
+    .bb-footer strong { color: var(--white); }
+
+    /* ─────────────────────────────────────────
+       UTILS
+    ───────────────────────────────────────── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); }
+    @media (max-width: 768px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } }
+
+    .token-table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+    .token-table th { background: var(--grey-card); text-align: left; padding: var(--space-3) var(--space-4); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: .07em; color: var(--grey-text); font-weight: var(--weight-bold); }
+    .token-table td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border); vertical-align: middle; }
+    .token-table tr:last-child td { border-bottom: none; }
+    .token-name { font-family: 'SF Mono', 'Fira Code', monospace; font-size: var(--text-xs); color: var(--blue-primary); }
+    .token-value { font-family: 'SF Mono', 'Fira Code', monospace; font-size: var(--text-xs); color: var(--grey-text); }
+    .color-chip {
+      display: inline-block;
+      width: 20px; height: 20px;
+      border-radius: var(--radius-sm);
+      vertical-align: middle;
+      margin-right: var(--space-2);
+      border: 1px solid rgba(0,0,0,.1);
+    }
+
+    .note {
+      background: rgba(0,74,128,.06);
+      border-left: 3px solid var(--blue-primary);
+      padding: var(--space-4) var(--space-5);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-size: var(--text-sm);
+      color: var(--grey-text);
+      margin-top: var(--space-4);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header class="bb-header">
+  <div>
+    <p class="bb-header__eyebrow">Hackathon Claude Impact Lab 2026</p>
+    <h1 class="bb-header__title">BrandBook</h1>
+    <p class="bb-header__sub">ACS Inteligente — SMS Rio de Janeiro</p>
+  </div>
+  <div class="bb-header__badge">v1.0 — Mai 2026</div>
+</header>
+
+<!-- ─── NAV ─── -->
+<nav class="bb-nav">
+  <a href="#colors">Cores</a>
+  <a href="#typography">Tipografia</a>
+  <a href="#spacing">Espaçamento</a>
+  <a href="#components">Componentes</a>
+  <a href="#patient-cards">Cards ACS</a>
+  <a href="#tokens">Tokens</a>
+</nav>
+
+<main>
+
+  <!-- ─── 1. COLORS ─── -->
+  <section class="bb-section" id="colors">
+    <p class="bb-section__label">01 — Paleta</p>
+    <h2 class="bb-section__title">Cores</h2>
+    <p class="bb-section__desc">Extraída diretamente do site oficial da Secretaria Municipal de Saúde (saude.prefeitura.rio). A paleta é centrada no azul institucional da Prefeitura Rio, com acentos funcionais para estados e feedback.</p>
+
+    <div class="bb-palette-group">
+      <p class="bb-palette-group__title">Azuis — Identidade Institucional</p>
+      <div class="bb-palette">
+        <div class="bb-swatch">
+          <div class="bb-swatch__block" style="background:#004a80"></div>
+          <div class="bb-swatch__info">
+            <div class="bb-swatch__name">Blue Primary</div>
+            <div class="bb-swatch__hex">#004a80 · rgb(0,74,128)</div>
+            <div class="bb-swatch__use">Header, navbar, fundo principal</div>
+          </div>
+        </div>
+        <div class="bb-swatch">
+          <div class="bb-swatch__block" style="background:#00508a"></div>
+          <div class="bb-swatch__info">
+            <div class="bb-swatch__name">Blue Secondary</div>
+            <div class="bb-swatch__hex">#00508a · rgb(0,80,138)</div>
+            <div class="bb-swatch__use">Títulos de seção, áreas de acesso</div>
+          </div>
+        </div>
+        <div class="bb-swatch">
+          <div class="bb-swatch__block" style="background:#003660"></div>
+          <div class="bb-swatch__info">
+            <div class="bb-swatch__name">Blue Dark</div>
+            <div class="bb-swatch__hex">#003660</div>
+            <div class="bb-swatch__use">Footer, estados hover profundos</div>
+          </div>
+        </div>
+        <div class="bb-swatch">
+          <div class="bb-swatch__block" style="background:#1863dc"></div>
+          <div class="bb-swatch__info">
+            <div class="bb-swatch__name">Blue Light (CTA)</div>
+            <div class="bb-swatch__hex">#1863dc · rgb(24,99,220)</div>
+            <div class="bb-swatch__use">Botões de ação, call-to-action</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bb-palette-group">
+      <p class="bb-palette-group__title">Acentos — Feedback & Estado</p>
+      <div class="bb-palette">
+        <div class="bb-swatch">
+          <div class="bb-swatch__block" style="background:#0bb975"></div>
+          <div class="bb-swatch__info">
+            <div class="bb-swatch__name">Green Accent</div>
+            <div class="bb-swatch__hex">#0bb975 · rgb(11,185,117)</div>
+            <div class="bb-swatch__use">Links em fundo escuro, sucesso, visita realizada</div>
+          </div>
+        </div>
+        <div class="bb-swatch">
+          <div class="bb-swatch__block" style="background:#00c0f4"></div>
+          <div class="bb-swatch__info">
+            <div class="bb-swatch__name">Cyan Accent</div>
+            <div class="bb-swatch__hex">#00c0f4 · rgb(0,192,244)</div>
+            <div class="bb-swatch__use">Destaques, badges, agendamentos</div>
+          </div>
+        </div>
+        <div class="bb-swatch">
+          <div class="bb-swatch__block" style="background:#dc3545"></div>
+          <div class="bb-swatch__info">
+            <div class="bb-swatch__name">Red — Urgência</div>
+            <div class="bb-swatch__hex">#dc3545</div>
+            <div class="bb-swatch__use">Prioridade máxima, emergências</div>
+          </div>
+        </div>
+        <div class="bb-swatch">
+          <div class="bb-swatch__block" style="background:#fd7e14"></div>
+          <div class="bb-swatch__info">
+            <div class="bb-swatch__name">Orange — Alto Risco</div>
+            <div class="bb-swatch__hex">#fd7e14</div>
+            <div class="bb-swatch__use">Prioridade alta, alertas</div>
+          </div>
+        </div>
+        <div class="bb-swatch">
+          <div class="bb-swatch__block" style="background:#ffc107"></div>
+          <div class="bb-swatch__info">
+            <div class="bb-swatch__name">Yellow — Médio</div>
+            <div class="bb-swatch__hex">#ffc107</div>
+            <div class="bb-swatch__use">Prioridade média, atenção</div>
+          </div>
+        </div>
+        <div class="bb-swatch">
+          <div class="bb-swatch__block" style="background:#28a745"></div>
+          <div class="bb-swatch__info">
+            <div class="bb-swatch__name">Green — Rotina</div>
+            <div class="bb-swatch__hex">#28a745</div>
+            <div class="bb-swatch__use">Prioridade baixa, visita rotineira</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bb-palette-group">
+      <p class="bb-palette-group__title">Neutros — Layout & Texto</p>
+      <div class="bb-palette">
+        <div class="bb-swatch">
+          <div class="bb-swatch__block" style="background:#363636"></div>
+          <div class="bb-swatch__info">
+            <div class="bb-swatch__name">Grey Bar</div>
+            <div class="bb-swatch__hex">#363636 · rgb(54,54,54)</div>
+            <div class="bb-swatch__use">Barra utilitária, top bar</div>
+          </div>
+        </div>
+        <div class="bb-swatch">
+          <div class="bb-swatch__block" style="background:#181818"></div>
+          <div class="bb-swatch__info">
+            <div class="bb-swatch__name">Text Dark</div>
+            <div class="bb-swatch__hex">#181818</div>
+            <div class="bb-swatch__use">Texto primário de alta densidade</div>
+          </div>
+        </div>
+        <div class="bb-swatch">
+          <div class="bb-swatch__block" style="background:#333333"></div>
+          <div class="bb-swatch__info">
+            <div class="bb-swatch__name">Text Body</div>
+            <div class="bb-swatch__hex">#333333</div>
+            <div class="bb-swatch__use">Corpo de texto, parágrafos</div>
+          </div>
+        </div>
+        <div class="bb-swatch">
+          <div class="bb-swatch__block" style="background:#ededed; border: 1px solid #d5d5d5;"></div>
+          <div class="bb-swatch__info">
+            <div class="bb-swatch__name">Grey Card</div>
+            <div class="bb-swatch__hex">#ededed · rgb(237,237,237)</div>
+            <div class="bb-swatch__use">Cards de serviço, superfícies neutras</div>
+          </div>
+        </div>
+        <div class="bb-swatch">
+          <div class="bb-swatch__block" style="background:#cac7c7; "></div>
+          <div class="bb-swatch__info">
+            <div class="bb-swatch__name">Grey Mid</div>
+            <div class="bb-swatch__hex">#cac7c7</div>
+            <div class="bb-swatch__use">Bordas, divisores, separadores</div>
+          </div>
+        </div>
+        <div class="bb-swatch">
+          <div class="bb-swatch__block" style="background:#ffffff; border: 1px solid #e5e5e5;"></div>
+          <div class="bb-swatch__info">
+            <div class="bb-swatch__name">White</div>
+            <div class="bb-swatch__hex">#ffffff</div>
+            <div class="bb-swatch__use">Fundo de página, texto sobre escuro</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="bb-divider" />
+
+  <!-- ─── 2. TYPOGRAPHY ─── -->
+  <section class="bb-section" id="typography">
+    <p class="bb-section__label">02 — Tipografia</p>
+    <h2 class="bb-section__title">Tipografia</h2>
+    <p class="bb-section__desc">Fonte principal: <strong>Cera Pro</strong> — família tipográfica usada em todo o site da SMS. Fallback para Segoe UI / Arial. O sistema usa três pesos: Regular (400), Bold (700) e Black (900).</p>
+
+    <div class="bb-type-specimen">
+      <div class="bb-type-specimen__preview">
+        <p class="t-hero">Inteligência no Território</p>
+      </div>
+      <div class="bb-type-specimen__meta">
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Estilo</p><p class="bb-type-meta-value">Hero / Display</p></div>
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Tamanho</p><p class="bb-type-meta-value">52px</p></div>
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Peso</p><p class="bb-type-meta-value">900 — Black</p></div>
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Line-height</p><p class="bb-type-meta-value">1.2</p></div>
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Cor</p><p class="bb-type-meta-value">#00508a</p></div>
+      </div>
+    </div>
+
+    <div class="bb-type-specimen">
+      <div class="bb-type-specimen__preview">
+        <p class="t-h1">SERVIÇOS DE SAÚDE</p>
+      </div>
+      <div class="bb-type-specimen__meta">
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Estilo</p><p class="bb-type-meta-value">H1 — Seção</p></div>
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Tamanho</p><p class="bb-type-meta-value">40px</p></div>
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Peso</p><p class="bb-type-meta-value">900 — Black</p></div>
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Case</p><p class="bb-type-meta-value">UPPERCASE</p></div>
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Tracking</p><p class="bb-type-meta-value">0.08em</p></div>
+      </div>
+    </div>
+
+    <div class="bb-type-specimen">
+      <div class="bb-type-specimen__preview">
+        <p class="t-h2">Agentes Comunitários de Saúde</p>
+      </div>
+      <div class="bb-type-specimen__meta">
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Estilo</p><p class="bb-type-meta-value">H2</p></div>
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Tamanho</p><p class="bb-type-meta-value">28px</p></div>
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Peso</p><p class="bb-type-meta-value">900 — Black</p></div>
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Line-height</p><p class="bb-type-meta-value">1.2</p></div>
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Cor</p><p class="bb-type-meta-value">#00508a</p></div>
+      </div>
+    </div>
+
+    <div class="bb-type-specimen">
+      <div class="bb-type-specimen__preview">
+        <p class="t-h3">Priorização baseada em risco real</p>
+      </div>
+      <div class="bb-type-specimen__meta">
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Estilo</p><p class="bb-type-meta-value">H3</p></div>
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Tamanho</p><p class="bb-type-meta-value">20px</p></div>
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Peso</p><p class="bb-type-meta-value">700 — Bold</p></div>
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Cor</p><p class="bb-type-meta-value">#181818</p></div>
+      </div>
+    </div>
+
+    <div class="bb-type-specimen">
+      <div class="bb-type-specimen__preview">
+        <p class="t-body">O ACS é o profissional responsável por fazer visitas não agendadas e acompanhar as famílias onde elas moram. É a ponte entre o território e as equipes de saúde da família nas clínicas. São mais de 6.200 agentes atuando no Rio de Janeiro, cobrindo 4,5 milhões de habitantes.</p>
+      </div>
+      <div class="bb-type-specimen__meta">
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Estilo</p><p class="bb-type-meta-value">Body</p></div>
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Tamanho</p><p class="bb-type-meta-value">16px</p></div>
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Peso</p><p class="bb-type-meta-value">400 — Regular</p></div>
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Line-height</p><p class="bb-type-meta-value">1.75</p></div>
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Cor</p><p class="bb-type-meta-value">#333333</p></div>
+      </div>
+    </div>
+
+    <div class="bb-type-specimen">
+      <div class="bb-type-specimen__preview" style="background:var(--blue-primary)">
+        <p class="t-nav">CONHEÇA · SERVIÇOS · UNIDADES DE SAÚDE</p>
+      </div>
+      <div class="bb-type-specimen__meta">
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Estilo</p><p class="bb-type-meta-value">Nav / Label</p></div>
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Tamanho</p><p class="bb-type-meta-value">13px</p></div>
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Peso</p><p class="bb-type-meta-value">700 — Bold</p></div>
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Case</p><p class="bb-type-meta-value">UPPERCASE</p></div>
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Tracking</p><p class="bb-type-meta-value">0.08em</p></div>
+      </div>
+    </div>
+
+    <div class="bb-type-specimen">
+      <div class="bb-type-specimen__preview" style="background:var(--grey-card)">
+        <p class="t-card">VACINAÇÃO CONTRA A GRIPE · SAÚDE MENTAL · IST/AIDS</p>
+      </div>
+      <div class="bb-type-specimen__meta">
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Estilo</p><p class="bb-type-meta-value">Card Title</p></div>
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Tamanho</p><p class="bb-type-meta-value">13px</p></div>
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Peso</p><p class="bb-type-meta-value">700 — Bold</p></div>
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Case</p><p class="bb-type-meta-value">UPPERCASE</p></div>
+        <div class="bb-type-specimen__meta-item"><p class="bb-type-meta-label">Cor</p><p class="bb-type-meta-value">#181818</p></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="bb-divider" />
+
+  <!-- ─── 3. SPACING ─── -->
+  <section class="bb-section" id="spacing">
+    <p class="bb-section__label">03 — Espaçamento</p>
+    <h2 class="bb-section__title">Escala de Espaçamento</h2>
+    <p class="bb-section__desc">Escala de 8pt com multiplicadores. Usar sempre estes valores fixos — não usar valores arbitrários no CSS.</p>
+
+    <div class="spacing-grid">
+      <div class="spacing-item"><div class="spacing-block" style="width:4px; height:4px;"></div><span class="spacing-label">--space-1</span><span class="spacing-val">4px</span></div>
+      <div class="spacing-item"><div class="spacing-block" style="width:8px; height:8px;"></div><span class="spacing-label">--space-2</span><span class="spacing-val">8px</span></div>
+      <div class="spacing-item"><div class="spacing-block" style="width:12px; height:12px;"></div><span class="spacing-label">--space-3</span><span class="spacing-val">12px</span></div>
+      <div class="spacing-item"><div class="spacing-block" style="width:16px; height:16px;"></div><span class="spacing-label">--space-4</span><span class="spacing-val">16px</span></div>
+      <div class="spacing-item"><div class="spacing-block" style="width:24px; height:24px;"></div><span class="spacing-label">--space-5</span><span class="spacing-val">24px</span></div>
+      <div class="spacing-item"><div class="spacing-block" style="width:32px; height:32px;"></div><span class="spacing-label">--space-6</span><span class="spacing-val">32px</span></div>
+      <div class="spacing-item"><div class="spacing-block" style="width:48px; height:48px;"></div><span class="spacing-label">--space-7</span><span class="spacing-val">48px</span></div>
+      <div class="spacing-item"><div class="spacing-block" style="width:64px; height:64px;"></div><span class="spacing-label">--space-8</span><span class="spacing-val">64px</span></div>
+      <div class="spacing-item"><div class="spacing-block" style="width:96px; height:96px;"></div><span class="spacing-label">--space-9</span><span class="spacing-val">96px</span></div>
+    </div>
+  </section>
+
+  <hr class="bb-divider" />
+
+  <!-- ─── 4. COMPONENTS ─── -->
+  <section class="bb-section" id="components">
+    <p class="bb-section__label">04 — Componentes</p>
+    <h2 class="bb-section__title">Biblioteca de Componentes</h2>
+
+    <div class="bb-components">
+
+      <!-- Navbar -->
+      <div class="bb-comp-group">
+        <p class="bb-comp-group__title">Navbar</p>
+        <div class="navbar-preview">
+          <div class="navbar-preview__bar">
+            <span>PREFEITURA.RIO</span>
+            <span style="margin-left:auto; display:flex; gap:16px; opacity:.6;">Acessibilidade · Carioca Digital · 1746</span>
+          </div>
+          <div class="navbar-preview__main">
+            <div class="navbar-preview__logo">Prefeitura <span>RIO</span> · <span style="color:rgba(255,255,255,.85); font-weight:400;">Saúde</span></div>
+            <div class="navbar-preview__links">
+              <span>Conheça</span>
+              <span>Serviços</span>
+              <span>Unidades de Saúde</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="bb-comp-group">
+        <p class="bb-comp-group__title">Botões</p>
+        <div class="bb-comp-row">
+          <button class="btn btn-primary btn-lg">Ver Lista de Visitas</button>
+          <button class="btn btn-primary">Confirmar Visita</button>
+          <button class="btn btn-primary btn-sm">Filtrar</button>
+        </div>
+        <div class="bb-comp-row" style="margin-top:12px;">
+          <button class="btn btn-secondary btn-lg">Ver Perfil</button>
+          <button class="btn btn-secondary">Reagendar</button>
+          <button class="btn btn-secondary btn-sm">Cancelar</button>
+        </div>
+        <div class="bb-comp-row" style="margin-top:12px;">
+          <button class="btn btn-cta btn-lg">Iniciar Jornada</button>
+          <button class="btn btn-green">Visita Concluída</button>
+        </div>
+      </div>
+
+      <!-- Badges -->
+      <div class="bb-comp-group">
+        <p class="bb-comp-group__title">Badges</p>
+        <div class="bb-comp-row">
+          <span class="badge badge-primary">SMS Rio</span>
+          <span class="badge badge-green">Ativo</span>
+          <span class="badge badge-cyan">Agendado</span>
+          <span class="badge badge-warning">Pendente</span>
+          <span class="badge badge-danger">Urgente</span>
+        </div>
+      </div>
+
+      <!-- Tags clínicas -->
+      <div class="bb-comp-group">
+        <p class="bb-comp-group__title">Tags — Condições Clínicas</p>
+        <div class="bb-comp-row">
+          <span class="tag tag-hipertenso">💊 Hipertenso</span>
+          <span class="tag tag-diabetico">🩺 Diabético</span>
+          <span class="tag tag-gestante">🤱 Gestante</span>
+          <span class="tag tag-vulneravel">⚠️ Vulnerável</span>
+          <span class="tag tag-emergencia">🚨 Emergência recente</span>
+        </div>
+      </div>
+
+      <!-- Search Input -->
+      <div class="bb-comp-group">
+        <p class="bb-comp-group__title">Campo de Busca</p>
+        <div class="input-search">
+          <input type="text" placeholder="Buscar paciente ou endereço..." />
+          <button class="input-search__btn">🔍</button>
+        </div>
+      </div>
+
+      <!-- Cards de serviço -->
+      <div class="bb-comp-group">
+        <p class="bb-comp-group__title">Cards de Serviço (padrão SMS)</p>
+        <div class="grid-4">
+          <div class="card-service"><p class="card-title">Visitas do ACS</p></div>
+          <div class="card-service"><p class="card-title">Agendamentos</p></div>
+          <div class="card-service"><p class="card-title">Urgência e Emergência</p></div>
+          <div class="card-service"><p class="card-title">Mapa do Território</p></div>
+        </div>
+      </div>
+
+      <!-- Priority rows -->
+      <div class="bb-comp-group">
+        <p class="bb-comp-group__title">Níveis de Prioridade — ACS Inteligente</p>
+        <div style="max-width: 520px;">
+          <div class="priority-row p1"><span class="priority-dot priority-1"></span>Prioridade 1 — Urgente · Emergência recente ou visita em atraso crítico</div>
+          <div class="priority-row p2"><span class="priority-dot priority-2"></span>Prioridade 2 — Alto · Paciente hipertenso ou diabético sem visita recente</div>
+          <div class="priority-row p3"><span class="priority-dot priority-3"></span>Prioridade 3 — Médio · Gestante ou criança com acompanhamento pendente</div>
+          <div class="priority-row p4"><span class="priority-dot priority-4"></span>Prioridade 4 — Rotina · Visita dentro do prazo recomendado</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="bb-divider" />
+
+  <!-- ─── 5. PATIENT CARDS ─── -->
+  <section class="bb-section" id="patient-cards">
+    <p class="bb-section__label">05 — Cards ACS</p>
+    <h2 class="bb-section__title">Cards de Paciente</h2>
+    <p class="bb-section__desc">Componente central da aplicação. Exibe o paciente com prioridade, condições clínicas, e motivo da visita. A cor da borda esquerda codifica a prioridade.</p>
+
+    <div class="grid-2">
+
+      <div class="card-patient" style="border-left: 4px solid #dc3545;">
+        <div class="card-patient__header">
+          <div>
+            <p class="card-patient__id">Paciente #a3f7...b812 · Equipe #3c1d</p>
+            <p class="card-patient__name">Paciente A</p>
+          </div>
+          <span class="badge badge-danger">Urgente</span>
+        </div>
+        <p style="font-size:13px; color:var(--grey-text); line-height:1.6;">Ida à urgência há 3 dias. Sem visita há 14 dias. Hipertensa.</p>
+        <div class="card-patient__tags">
+          <span class="tag tag-hipertenso">💊 Hipertenso</span>
+          <span class="tag tag-emergencia">🚨 Emergência recente</span>
+          <span class="tag tag-vulneravel">⚠️ Vulnerável</span>
+        </div>
+      </div>
+
+      <div class="card-patient" style="border-left: 4px solid #fd7e14;">
+        <div class="card-patient__header">
+          <div>
+            <p class="card-patient__id">Paciente #b9c2...e041 · Equipe #3c1d</p>
+            <p class="card-patient__name">Paciente B</p>
+          </div>
+          <span class="badge badge-warning">Alto Risco</span>
+        </div>
+        <p style="font-size:13px; color:var(--grey-text); line-height:1.6;">Gestante. Consulta de pré-natal agendada para amanhã. ACS deve comunicar.</p>
+        <div class="card-patient__tags">
+          <span class="tag tag-gestante">🤱 Gestante</span>
+          <span class="tag tag-cyan" style="background:rgba(0,192,244,.15); color:#007fa5;">📅 Agendamento</span>
+        </div>
+      </div>
+
+      <div class="card-patient" style="border-left: 4px solid #ffc107;">
+        <div class="card-patient__header">
+          <div>
+            <p class="card-patient__id">Paciente #d2a8...9f34 · Equipe #3c1d</p>
+            <p class="card-patient__name">Paciente C</p>
+          </div>
+          <span class="badge" style="background:rgba(255,193,7,.2); color:#856404;">Médio</span>
+        </div>
+        <p style="font-size:13px; color:var(--grey-text); line-height:1.6;">Diabético. Última visita há 9 dias. Frequência recomendada: 7 dias.</p>
+        <div class="card-patient__tags">
+          <span class="tag tag-diabetico">🩺 Diabético</span>
+        </div>
+      </div>
+
+      <div class="card-patient" style="border-left: 4px solid #28a745;">
+        <div class="card-patient__header">
+          <div>
+            <p class="card-patient__id">Paciente #f1e5...0c77 · Equipe #3c1d</p>
+            <p class="card-patient__name">Paciente D</p>
+          </div>
+          <span class="badge badge-green">Rotina</span>
+        </div>
+        <p style="font-size:13px; color:var(--grey-text); line-height:1.6;">Visita de rotina. Última visita há 25 dias. Sem condições especiais ativas.</p>
+        <div class="card-patient__tags">
+          <span class="badge badge-green">Dentro do prazo</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="bb-divider" />
+
+  <!-- ─── 6. TOKENS ─── -->
+  <section class="bb-section" id="tokens">
+    <p class="bb-section__label">06 — Design Tokens</p>
+    <h2 class="bb-section__title">Tokens CSS</h2>
+    <p class="bb-section__desc">Usar estas variáveis CSS no código. Nunca usar valores hexadecimais hardcoded fora do arquivo de tokens.</p>
+
+    <table class="token-table">
+      <thead>
+        <tr>
+          <th>Token</th>
+          <th>Valor</th>
+          <th>Preview</th>
+          <th>Uso</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="token-name">--blue-primary</td><td class="token-value">#004a80</td><td><span class="color-chip" style="background:#004a80"></span></td><td class="t-small">Header, navbar</td></tr>
+        <tr><td class="token-name">--blue-secondary</td><td class="token-value">#00508a</td><td><span class="color-chip" style="background:#00508a"></span></td><td class="t-small">Títulos de seção</td></tr>
+        <tr><td class="token-name">--blue-dark</td><td class="token-value">#003660</td><td><span class="color-chip" style="background:#003660"></span></td><td class="t-small">Footer, hover</td></tr>
+        <tr><td class="token-name">--blue-light</td><td class="token-value">#1863dc</td><td><span class="color-chip" style="background:#1863dc"></span></td><td class="t-small">CTA, ações</td></tr>
+        <tr><td class="token-name">--cyan-accent</td><td class="token-value">#00c0f4</td><td><span class="color-chip" style="background:#00c0f4"></span></td><td class="t-small">Destaques, badges</td></tr>
+        <tr><td class="token-name">--green-accent</td><td class="token-value">#0bb975</td><td><span class="color-chip" style="background:#0bb975"></span></td><td class="t-small">Links escuro, sucesso</td></tr>
+        <tr><td class="token-name">--grey-bar</td><td class="token-value">#363636</td><td><span class="color-chip" style="background:#363636"></span></td><td class="t-small">Top bar</td></tr>
+        <tr><td class="token-name">--grey-card</td><td class="token-value">#ededed</td><td><span class="color-chip" style="background:#ededed"></span></td><td class="t-small">Cards neutros</td></tr>
+        <tr><td class="token-name">--grey-text</td><td class="token-value">#333333</td><td><span class="color-chip" style="background:#333333"></span></td><td class="t-small">Corpo de texto</td></tr>
+        <tr><td class="token-name">--grey-dark</td><td class="token-value">#181818</td><td><span class="color-chip" style="background:#181818"></span></td><td class="t-small">Texto primário</td></tr>
+        <tr><td class="token-name">--font-display</td><td class="token-value">'Cera Pro', Segoe UI, Arial</td><td>—</td><td class="t-small">Títulos</td></tr>
+        <tr><td class="token-name">--font-body</td><td class="token-value">'Cera Pro', Segoe UI, Arial</td><td>—</td><td class="t-small">Corpo de texto</td></tr>
+        <tr><td class="token-name">--text-base</td><td class="token-value">16px</td><td>—</td><td class="t-small">Tamanho base</td></tr>
+        <tr><td class="token-name">--radius-sm</td><td class="token-value">4px</td><td>—</td><td class="t-small">Cards, botões</td></tr>
+        <tr><td class="token-name">--radius-md</td><td class="token-value">8px</td><td>—</td><td class="t-small">Modais, painéis</td></tr>
+        <tr><td class="token-name">--shadow-md</td><td class="token-value">0 4px 12px rgba(0,74,128,.15)</td><td>—</td><td class="t-small">Cards em hover</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <strong>Nota sobre a fonte:</strong> Cera Pro é uma fonte licenciada não disponível no Google Fonts. Para o protótipo do hackathon, usar <code>Inter</code> como substituto funcional — mesma proporção e legibilidade. Para produção, adquirir licença em MyFonts ou usar a fonte institucional da Prefeitura.
+    </div>
+  </section>
+
+</main>
+
+<footer class="bb-footer">
+  <strong>BrandBook — ACS Inteligente</strong><br/>
+  Hackathon Claude Impact Lab 2026 · Secretaria Municipal de Saúde · Prefeitura do Rio de Janeiro
+</footer>
+
+</body>
+</html>

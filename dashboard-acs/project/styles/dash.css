@@ -1,0 +1,271 @@
+/* ============================================================
+   Painel do Gestor — extensions on top of kit.css
+   New widgets: CoverageWithMeta, ActionList, Invisíveis stack,
+   DeficitTable, HBarList, DualLineChart, Donut, table footer.
+   ============================================================ */
+
+/* ─── Coverage with meta line ──────────────────────────── */
+.gst-cov2 { display: flex; flex-direction: column; gap: 10px; }
+.gst-cov2__head { display: flex; justify-content: space-between; align-items: baseline; }
+.gst-cov2__label { font-size: 12px; color: var(--fg-2); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+.gst-cov2__pct { color: var(--blue-secondary); font-size: 32px; font-weight: 900; line-height: 1; letter-spacing: -0.02em; }
+.gst-cov2__track {
+  position: relative;
+  height: 16px;
+  background: var(--grey-card);
+  border-radius: 4px;
+  overflow: visible;
+}
+.gst-cov2__fill {
+  height: 100%;
+  background: linear-gradient(90deg, #1863dc, #0bb975);
+  border-radius: 4px;
+}
+.gst-cov2__meta {
+  position: absolute;
+  top: -6px;
+  height: 28px;
+  width: 0;
+  border-left: 2px dashed #9b1c28;
+}
+.gst-cov2__meta-lbl {
+  position: absolute;
+  top: -16px;
+  left: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #9b1c28;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  white-space: nowrap;
+}
+.gst-cov2__scale {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--fg-3);
+}
+
+/* ─── Invisíveis stack ─────────────────────────────────── */
+.gst-invis { display: flex; flex-direction: column; gap: 8px; }
+.gst-invis__row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 16px;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 4px;
+  border-left: 3px solid transparent;
+  background: #fafafa;
+}
+.gst-invis__row--critico { border-left-color: #dc3545; background: rgba(220,53,69,.05); }
+.gst-invis__row--urgente { border-left-color: #fd7e14; background: rgba(253,126,20,.05); }
+.gst-invis__row--neutral { border-left-color: #6b6b6b; background: #fafafa; }
+.gst-invis__value {
+  font-size: 28px; font-weight: 900; line-height: 1;
+  letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
+  color: var(--blue-secondary);
+}
+.gst-invis__row--critico .gst-invis__value { color: #9b1c28; }
+.gst-invis__row--urgente .gst-invis__value { color: #8d4a0c; }
+.gst-invis__meta { display: flex; flex-direction: column; gap: 2px; }
+.gst-invis__label { font-size: 13px; font-weight: 700; color: var(--fg-1); }
+.gst-invis__sub { font-size: 11px; color: var(--fg-3); }
+
+/* ─── ActionList (Agir hoje) ───────────────────────────── */
+.gst-actions { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px; }
+.gst-actions__row {
+  display: grid;
+  grid-template-columns: 12px 56px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  transition: background .12s;
+}
+.gst-actions__row:hover { background: rgba(0,74,128,.04); }
+.gst-actions__dot { width: 10px; height: 10px; border-radius: 50%; }
+.gst-actions__n {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--fg-1);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.gst-actions__label { color: var(--fg-1); font-weight: 500; }
+.gst-actions__cta {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--blue-primary);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.gst-actions__cta:hover { text-decoration: underline; }
+
+/* ─── DeficitTable extras ─────────────────────────────── */
+.gst-table--deficit td { padding: 14px 16px; }
+.gst-deficit { color: #9b1c28; font-weight: 700; }
+.gst-pctcell { display: grid; grid-template-columns: 1fr 50px; gap: 10px; align-items: center; }
+.gst-pctcell__track { height: 8px; background: var(--grey-card); border-radius: 4px; overflow: hidden; }
+.gst-pctcell__fill { height: 100%; border-radius: 4px; }
+.gst-pctcell__pct { font-family: var(--font-mono); font-weight: 700; font-size: 12px; text-align: right; }
+
+/* ─── HBarList (produtividade) ────────────────────────── */
+.gst-hbar { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.gst-hbar li { display: grid; grid-template-columns: 220px 1fr; gap: 16px; align-items: center; }
+.gst-hbar__meta { display: flex; flex-direction: column; gap: 1px; line-height: 1.2; }
+.gst-hbar__id { font-family: var(--font-mono); font-size: 10px; color: var(--fg-3); }
+.gst-hbar__name { font-weight: 700; font-size: 13px; color: var(--fg-1); }
+.gst-hbar__team { font-size: 11px; color: var(--fg-3); }
+.gst-hbar__track { height: 22px; background: var(--grey-card); border-radius: 4px; overflow: hidden; }
+.gst-hbar__fill {
+  height: 100%;
+  background: var(--blue-primary);
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: flex-end;
+  padding-right: 8px;
+  min-width: 28px;
+}
+.gst-hbar__n {
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ─── Chart (dual line) ───────────────────────────────── */
+.gst-chart { display: flex; flex-direction: column; gap: 8px; }
+.gst-chart__svg { width: 100%; height: auto; }
+.gst-chart__legend { display: flex; gap: 24px; padding-left: 48px; }
+.gst-chart__legend span { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: var(--fg-2); }
+.gst-chart__legend i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; }
+
+/* ─── Donut ──────────────────────────────────────────── */
+.gst-donut { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: center; padding: 8px 4px; }
+.gst-donut__svg { width: 160px; height: 160px; display: block; }
+.gst-donut__legend { display: flex; flex-direction: column; gap: 10px; }
+.gst-donut__legend div { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--fg-2); }
+.gst-donut__legend strong { font-family: var(--font-mono); font-weight: 700; color: var(--fg-1); }
+.gst-donut__legend i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+
+/* ─── Patient table specifics ─────────────────────────── */
+.gst-table--patients td { padding: 13px 14px; vertical-align: middle; }
+
+/* ─── Table footer ────────────────────────────────────── */
+.gst-tablefoot {
+  padding: 12px 16px;
+  border-top: 1px solid var(--border-color);
+  font-size: 12px;
+  color: var(--fg-2);
+  background: #fafafa;
+}
+.gst-tablefoot strong { color: var(--fg-1); font-family: var(--font-mono); }
+
+/* ─── Override: bars colored by sequential gradient ──── */
+.gst-bars__bar { background: var(--blue-primary); }
+.gst-bars__bar:last-child,
+.gst-bars__col:last-child .gst-bars__bar { background: var(--green-accent); }
+
+/* ─── Section head bottom hint spacing ────────────────── */
+.gst-sec-head + .gst-grid-2,
+.gst-sec-head + .gst-grid-3,
+.gst-sec-head + .gst-grid-4 { margin-top: 4px; }
+
+/* ─── Make table padding consistent in --teams ────────── */
+.gst-table--teams .gst-team-cell code { font-size: 10px; }
+
+/* ─── A11y focus ──────────────────────────────────────── */
+.gst-btn:focus-visible,
+.gst-select:focus-visible,
+.gst-search input:focus-visible { outline: 2px solid var(--cta); outline-offset: 2px; }
+
+/* ─── Smooth table hover for clickable rows ───────────── */
+.gst-table tbody tr { cursor: pointer; }
+
+/* ─── Topbar — keep slim on wider screens ─────────────── */
+.gst-topbar { padding: 6px 32px; }
+
+/* ─── Nav: prevent tab text breaking when narrow ──────── */
+.gst-nav__tab { white-space: nowrap; }
+
+/* ─── Decision block (Visão Geral) ────────────────────── */
+.gst-decision {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.gst-decision__row {
+  display: grid;
+  grid-template-columns: 200px 1fr auto;
+  gap: 24px;
+  align-items: center;
+  padding: 18px 22px;
+  border: 1px solid var(--border-color);
+  border-left-width: 4px;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,74,128,.06);
+}
+.gst-decision__row--hoje      { background: #fff3cd; border-left-color: #dc3545; }
+.gst-decision__row--semana    { background: #fff8f0; border-left-color: #fd7e14; }
+.gst-decision__row--tendencia { background: #f0faf5; border-left-color: #0bb975; }
+
+.gst-decision__head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.gst-decision__tag {
+  font-size: 13px;
+  font-weight: 900;
+  color: var(--blue-secondary);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  line-height: 1.1;
+}
+.gst-decision__row--hoje      .gst-decision__tag { color: #9b1c28; }
+.gst-decision__row--semana    .gst-decision__tag { color: #8d4a0c; }
+.gst-decision__row--tendencia .gst-decision__tag { color: #1a6630; }
+.gst-decision__when {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--fg-3);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.gst-decision__body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.gst-decision__line {
+  margin: 0;
+  font-size: 16px;
+  color: var(--fg-1);
+  line-height: 1.45;
+  font-weight: 500;
+}
+.gst-decision__line strong {
+  font-weight: 900;
+  color: var(--fg-1);
+}
+.gst-decision__sub {
+  margin: 0;
+  font-size: 12px;
+  color: var(--fg-2);
+  line-height: 1.5;
+}
+.gst-decision__sub strong { font-weight: 700; color: var(--fg-1); }
+
+@media (max-width: 980px) {
+  .gst-decision__row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
