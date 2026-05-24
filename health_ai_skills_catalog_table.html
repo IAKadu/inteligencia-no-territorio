@@ -1,0 +1,253 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+.wrap{padding:1rem 0}
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem}
+.filter-btn{font-size:12px;padding:4px 12px;border-radius:999px;border:0.5px solid var(--color-border-secondary);background:transparent;color:var(--color-text-secondary);cursor:pointer;transition:background .15s}
+.filter-btn.active,.filter-btn:hover{background:var(--color-background-secondary)}
+.filter-btn.active{color:var(--color-text-primary);border-color:var(--color-border-primary)}
+table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:13px}
+thead th{font-weight:500;font-size:12px;color:var(--color-text-secondary);padding:8px 10px;text-align:left;border-bottom:0.5px solid var(--color-border-tertiary);position:sticky;top:0;background:var(--color-background-primary)}
+th:nth-child(1){width:22%}
+th:nth-child(2){width:9%}
+th:nth-child(3){width:69%}
+tbody tr{border-bottom:0.5px solid var(--color-border-tertiary);transition:background .1s}
+tbody tr:hover{background:var(--color-background-secondary)}
+td{padding:9px 10px;vertical-align:top;color:var(--color-text-primary);line-height:1.5}
+td:first-child{font-family:var(--font-mono);font-size:11.5px;color:var(--color-text-secondary);word-break:break-all}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:999px;font-weight:500;white-space:nowrap}
+.ba{background:#EEEDFE;color:#3C3489}
+.bb{background:#FAECE7;color:#712B13}
+.bc{background:#E6F1FB;color:#0C447C}
+.bd{background:#E1F5EE;color:#085041}
+.be{background:#EAF3DE;color:#27500A}
+.bf{background:#FBEAF0;color:#72243E}
+.bg{background:#F1EFE8;color:#444441}
+@media(prefers-color-scheme:dark){
+.ba{background:#26215C;color:#CECBF6}
+.bb{background:#4A1B0C;color:#F5C4B3}
+.bc{background:#042C53;color:#B5D4F4}
+.bd{background:#04342C;color:#9FE1CB}
+.be{background:#173404;color:#C0DD97}
+.bf{background:#4B1528;color:#F4C0D1}
+.bg{background:#2C2C2A;color:#D3D1C7}
+}
+.star{color:#BA7517;font-size:12px}
+tr[data-layer="hidden"]{display:none}
+</style>
+<h2 class="sr-only">Tabela de skills e agentes da biblioteca health-ai-skills com nome, camada e descrição de cada item</h2>
+<div class="wrap">
+<div class="filter-bar">
+  <button class="filter-btn active" onclick="filter('all')">Todos</button>
+  <button class="filter-btn" onclick="filter('A')">A · Estratégia</button>
+  <button class="filter-btn" onclick="filter('B')">B · Segurança</button>
+  <button class="filter-btn" onclick="filter('C')">C · Engenharia</button>
+  <button class="filter-btn" onclick="filter('D')">D · IA/RAG</button>
+  <button class="filter-btn" onclick="filter('E')">E · Testes</button>
+  <button class="filter-btn" onclick="filter('F')">F · APS/SUS</button>
+  <button class="filter-btn" onclick="filter('AG')">Agentes</button>
+</div>
+<table>
+<thead>
+<tr>
+  <th>Nome</th>
+  <th>Camada</th>
+  <th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr data-layer="A">
+  <td>health-product-discovery</td>
+  <td><span class="badge ba">A</span></td>
+  <td>Mapeia problema, persona, contexto clínico, jornada e riscos antes de qualquer decisão de produto.</td>
+</tr>
+<tr data-layer="A">
+  <td>health-use-case-prioritization</td>
+  <td><span class="badge ba">A</span></td>
+  <td>Ranqueia ideias de saúde por impacto clínico, risco regulatório, esforço técnico e acesso a dados.</td>
+</tr>
+<tr data-layer="A">
+  <td>health-business-case</td>
+  <td><span class="badge ba">A</span></td>
+  <td>Estrutura tese de produto, proposta de valor por stakeholder, ICP, modelo de receita e métricas de sucesso.</td>
+</tr>
+<tr data-layer="A">
+  <td>clinical-workflow-mapping</td>
+  <td><span class="badge ba">A</span></td>
+  <td>Transforma fluxos clínicos reais (As-Is) em fluxos com IA (To-Be), identificando onde automatizar e onde é arriscado.</td>
+</tr>
+<tr data-layer="B">
+  <td>health-ai-safety-governance <span class="star">⭐</span></td>
+  <td><span class="badge bb">B</span></td>
+  <td>Skill-mãe obrigatória. Classifica tipo de uso, nível de risco e aplica guardrails antes de qualquer decisão técnica.</td>
+</tr>
+<tr data-layer="B">
+  <td>clinical-risk-triage</td>
+  <td><span class="badge bb">B</span></td>
+  <td>Pontua risco clínico de uma feature em três dimensões: receptor do output, tipo de output e consequência de erro.</td>
+</tr>
+<tr data-layer="B">
+  <td>medical-content-safety-review</td>
+  <td><span class="badge bb">B</span></td>
+  <td>Revisa textos, respostas de chatbot e materiais ao paciente para garantir linguagem segura, fontes e disclaimers.</td>
+</tr>
+<tr data-layer="B">
+  <td>human-in-the-loop-review</td>
+  <td><span class="badge bb">B</span></td>
+  <td>Define quando e como profissionais de saúde revisam outputs de IA antes de chegarem ao paciente ou sistema.</td>
+</tr>
+<tr data-layer="B">
+  <td>health-data-privacy-review</td>
+  <td><span class="badge bb">B</span></td>
+  <td>Revisa coleta, armazenamento, consentimento e compartilhamento de dados sensíveis de saúde sob a LGPD.</td>
+</tr>
+<tr data-layer="B">
+  <td>phi-pii-redaction</td>
+  <td><span class="badge bb">B</span></td>
+  <td>Remove ou mascara PHI/PII antes de prompts de LLM, logs, datasets de teste e ambientes de desenvolvimento.</td>
+</tr>
+<tr data-layer="B">
+  <td>regulatory-readiness-check</td>
+  <td><span class="badge bb">B</span></td>
+  <td>Checklist de prontidão regulatória: LGPD, SaMD/Anvisa, HIPAA, rastreabilidade e escopo de uso do produto.</td>
+</tr>
+<tr data-layer="C">
+  <td>healthcare-architecture-review</td>
+  <td><span class="badge bc">C</span></td>
+  <td>Revisa arquitetura de sistemas de saúde — autenticação, RBAC, criptografia, segregação de dados e logs auditáveis.</td>
+</tr>
+<tr data-layer="C">
+  <td>fhir-api-design</td>
+  <td><span class="badge bc">C</span></td>
+  <td>Projeta APIs e integrações FHIR R4: recursos, endpoints, SMART on FHIR e terminologias clínicas (LOINC, CID, TUSS).</td>
+</tr>
+<tr data-layer="C">
+  <td>ehr-integration-review</td>
+  <td><span class="badge bc">C</span></td>
+  <td>Due diligence e design de integrações com prontuários (HL7, FHIR, API proprietária), laboratórios e operadoras.</td>
+</tr>
+<tr data-layer="C">
+  <td>audit-log-design</td>
+  <td><span class="badge bc">C</span></td>
+  <td>Define trilhas de auditoria clínica: schema sem PHI, imutabilidade, retenção, alertas e queries de investigação.</td>
+</tr>
+<tr data-layer="C">
+  <td>secure-health-api-development</td>
+  <td><span class="badge bc">C</span></td>
+  <td>Padrões de segurança para APIs de saúde: OAuth 2.0, RBAC clínico, rate limiting, validação e erros seguros.</td>
+</tr>
+<tr data-layer="D">
+  <td>clinical-rag-design</td>
+  <td><span class="badge bd">D</span></td>
+  <td>Arquitetura RAG para fontes médicas: curadoria, chunking clínico, metadados de evidência, threshold e fallback.</td>
+</tr>
+<tr data-layer="D">
+  <td>evidence-quality-assessment</td>
+  <td><span class="badge bd">D</span></td>
+  <td>Classifica fontes clínicas por nível de evidência (diretriz → meta-análise → consenso → opinião) e atualidade.</td>
+</tr>
+<tr data-layer="D">
+  <td>citation-grounding</td>
+  <td><span class="badge bd">D</span></td>
+  <td>Garante rastreabilidade de fontes em respostas clínicas, separando fato, inferência e incerteza com citação obrigatória.</td>
+</tr>
+<tr data-layer="D">
+  <td>hallucination-risk-review</td>
+  <td><span class="badge bd">D</span></td>
+  <td>Detecta e mitiga alucinações clínicas — dosagem inventada, citação falsa, extrapolação de escopo e confiança excessiva.</td>
+</tr>
+<tr data-layer="D">
+  <td>clinical-prompt-hardening</td>
+  <td><span class="badge bd">D</span></td>
+  <td>Cria system prompts seguros com escopo explícito, protocolo de emergência, regras de citação e proteção contra jailbreak.</td>
+</tr>
+<tr data-layer="E">
+  <td>health-ai-eval-suite</td>
+  <td><span class="badge be">E</span></td>
+  <td>Bateria completa pré-deploy: recusas obrigatórias, emergências, qualidade RAG, adversarial, privacidade e observabilidade.</td>
+</tr>
+<tr data-layer="E">
+  <td>golden-dataset-builder</td>
+  <td><span class="badge be">E</span></td>
+  <td>Cria e mantém dataset de casos validados por especialistas para regressão após mudanças de modelo ou prompt.</td>
+</tr>
+<tr data-layer="E">
+  <td>clinical-adversarial-testing</td>
+  <td><span class="badge be">E</span></td>
+  <td>Testa diagnóstico, prescrição, jailbreak, manipulação emocional, boundary creep e automutilação com casos reais.</td>
+</tr>
+<tr data-layer="E">
+  <td>health-ai-observability</td>
+  <td><span class="badge be">E</span></td>
+  <td>Define métricas em três camadas (infra, LLM, qualidade clínica), dashboards, alertas críticos e runbooks de investigação.</td>
+</tr>
+<tr data-layer="E">
+  <td>incident-response-health-ai</td>
+  <td><span class="badge be">E</span></td>
+  <td>Procedimento para incidentes clínicos: classificação de severidade, contenção, comunicação, RCA e aprendizado.</td>
+</tr>
+<tr data-layer="F">
+  <td>sus-data-integration</td>
+  <td><span class="badge bf">F</span></td>
+  <td>Guia das bases do SUS (e-SUS PEC, SISAB, CNES, SIM, SINAN): estrutura, acesso, qualidade e pipeline de ingestão.</td>
+</tr>
+<tr data-layer="F">
+  <td>population-health-analytics</td>
+  <td><span class="badge bf">F</span></td>
+  <td>Análise de cobertura territorial, perfil epidemiológico e lacunas de atenção em populações de APS municipal.</td>
+</tr>
+<tr data-layer="F">
+  <td>patient-risk-stratification</td>
+  <td><span class="badge bf">F</span></td>
+  <td>Score de risco clínico com regras explicáveis para priorizar crônicos, gestantes e famílias invisíveis antes da crise.</td>
+</tr>
+<tr data-layer="F">
+  <td>acs-field-optimization</td>
+  <td><span class="badge bf">F</span></td>
+  <td>Converte lista de risco em roteiro diário do ACS respeitando capacidade de turno, tipo de território e prioridade clínica.</td>
+</tr>
+<tr data-layer="AG">
+  <td>health-product-strategist</td>
+  <td><span class="badge bg">Agente</span></td>
+  <td>Descoberta de produto para saúde: mapeia problema, persona, jornada e classifica risco antes de qualquer proposta.</td>
+</tr>
+<tr data-layer="AG">
+  <td>clinical-safety-reviewer</td>
+  <td><span class="badge bg">Agente</span></td>
+  <td>Avalia risco clínico de features, define HITL, revisa conteúdo ao paciente e bloqueia o que não pode ir a produção.</td>
+</tr>
+<tr data-layer="AG">
+  <td>privacy-compliance-architect</td>
+  <td><span class="badge bg">Agente</span></td>
+  <td>Garante LGPD, HIPAA e RDC 657/2022: inventário de dados, consentimento, DPA com subprocessadores e incidentes.</td>
+</tr>
+<tr data-layer="AG">
+  <td>health-software-architect</td>
+  <td><span class="badge bg">Agente</span></td>
+  <td>Projeta arquitetura segura de sistemas de saúde: RBAC clínico, segregação de dados, logs auditáveis e integrações.</td>
+</tr>
+<tr data-layer="AG">
+  <td>llm-health-engineer</td>
+  <td><span class="badge bg">Agente</span></td>
+  <td>Implementa LLM apps em saúde: define escopo de recusa, RAG clínico, fallback seguro e versionamento de prompt.</td>
+</tr>
+<tr data-layer="AG">
+  <td>health-qa-evaluator</td>
+  <td><span class="badge bg">Agente</span></td>
+  <td>Cria e executa testes de segurança clínica, adversariais, regressão e privacidade antes de qualquer deploy.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<script>
+function filter(layer){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('tbody tr').forEach(r=>{
+    r.dataset.layer==='hidden'&&(r.dataset.layer=r.dataset._layer||r.dataset.layer);
+    const l=r.dataset.layer;
+    r.style.display=(layer==='all'||l===layer)?'':'none';
+  });
+}
+</script>
