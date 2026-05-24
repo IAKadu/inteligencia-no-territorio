@@ -1,0 +1,48 @@
+dimensao_clinica:
+  gestacao: 40
+  faixa_0_6: 35
+  hipertenso_diabetico: 30
+  hipertenso: 20
+  diabetico: 20
+  idoso_66plus: 15
+  vulnerabilidade: 10
+
+dimensao_deficit:
+  peso_por_visita_faltante: 8
+
+minimo_visitas_ano:
+  faixa_0_6: 7
+  gestacao: 6
+  hipertenso: 4
+  diabetico: 4
+  hipertenso_diabetico: 4
+  idoso_66plus: 4
+  default: 2
+
+dimensao_urgencia:
+  peso_30d: 25
+  peso_90d: 15
+  peso_180d: 8
+  peso_ano: 3
+
+dimensao_agendamento:
+  tem_agendamento: 10
+
+bonus_invisivel:
+  alto_risco_sem_visita: 30
+  crise_sem_vinculo: 50
+
+faixas_prioridade:
+  critico: 80
+  urgente: 50
+  atencao: 20
+
+capacidade_turno_padrao: 6
+
+intervalo_minimo_revisita_dias:
+  faixa_0_6: 7
+  gestacao: 7
+  hipertenso: 14
+  diabetico: 14
+  idoso_66plus: 14
+  default: 30

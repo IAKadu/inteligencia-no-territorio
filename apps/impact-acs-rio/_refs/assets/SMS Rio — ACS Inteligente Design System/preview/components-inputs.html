@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  body { margin: 0; padding: 24px; background: #fff; font-family: var(--font-body); }
+  .field { display: flex; flex-direction: column; gap: 6px; max-width: 380px; }
+  label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #333; }
+  .input { display: flex; border: 1px solid #cac7c7; border-radius: 4px; overflow: hidden; background: #fff; }
+  .input input { flex: 1; border: none; outline: none; padding: 12px 14px; font-family: inherit; font-size: 14px; color: #181818; }
+  .input button { background: #004a80; border: none; padding: 0 16px; color: #fff; font-size: 16px; cursor: pointer; }
+  .select { padding: 12px 14px; border: 1px solid #cac7c7; border-radius: 4px; font-size: 14px; font-family: inherit; color: #181818; background: #fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='%23004a80' d='M0 0l5 6 5-6z'/></svg>") no-repeat right 14px center; -webkit-appearance: none; appearance: none; padding-right: 36px; }
+  .row { display: flex; gap: 18px; }
+</style></head>
+<body>
+  <div class="row">
+    <div class="field">
+      <label>Buscar paciente</label>
+      <div class="input"><input placeholder="Nome ou endereço…" /><button>🔍</button></div>
+    </div>
+    <div class="field" style="max-width:200px;">
+      <label>Equipe</label>
+      <select class="select"><option>Equipe #3c1d</option></select>
+    </div>
+  </div>
+</body></html>

@@ -11,6 +11,7 @@ Aplicação de apoio à Estratégia de Saúde da Família para priorizar visitas
 - Roteirização por proximidade geográfica.
 - Justificativas operacionais para o ACS.
 - Painel web para gestor e ACS.
+- App full-stack integrado em Next.js, Hono e Supabase para a versão ampliada do MVP.
 
 ## Estrutura
 
@@ -23,6 +24,12 @@ Aplicação de apoio à Estratégia de Saúde da Família para priorizar visitas
 │   └── visitas_anonimizadas.parquet
 ├── analises/
 ├── Branding Book/
+├── apps/
+│   └── impact-acs-rio/
+│       ├── src/backend/      # API Hono + Anthropic + Twilio + Supabase
+│       ├── src/frontend/     # Next.js + mapa + painel da reunião semanal
+│       ├── supabase/         # migrations versionadas
+│       └── _inbox/data/      # Parquets anonimizados para ingestão
 ├── projeto/
 │   ├── api/
 │   ├── config/
@@ -91,6 +98,35 @@ projeto/frontend/gestor/index.html
 
 O painel consome a API em `http://localhost:8000`.
 
+## App full-stack integrado
+
+A versão ampliada do MVP fica em `apps/impact-acs-rio/`.
+
+Ela traz:
+
+- Frontend Next.js com painel territorial, mapa, pacientes invisíveis, agenda e chat.
+- Backend TypeScript/Hono com endpoints REST, webhook WhatsApp/Twilio e integração Anthropic.
+- Migrations Supabase em `apps/impact-acs-rio/supabase/migrations/`.
+- Dados parquet anonimizados em `apps/impact-acs-rio/_inbox/data/`.
+
+Rodar backend:
+
+```bash
+cd apps/impact-acs-rio/src/backend
+npm install
+npm run dev
+```
+
+Rodar frontend:
+
+```bash
+cd apps/impact-acs-rio/src/frontend
+npm install
+npm run dev
+```
+
+Por padrão, o frontend espera a API em `http://localhost:3001`.
+
 ## Validar o pipeline
 
 ```bash
@@ -129,4 +165,3 @@ Faixas de prioridade:
 - Os Parquets deste repositório são anonimizados.
 - Arquivos `.env` ficam fora do Git.
 - Não commitar chaves de API, tokens ou dados identificáveis.
-

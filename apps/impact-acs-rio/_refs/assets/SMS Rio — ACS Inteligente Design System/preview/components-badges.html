@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../colors_and_type.css" />
+<style>
+  body { margin: 0; padding: 24px; background: #fff; font-family: var(--font-body); }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 14px; }
+  .badge { display: inline-flex; align-items: center; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+  .b-primary { background: rgba(0,74,128,.12); color: #004a80; }
+  .b-green { background: rgba(11,185,117,.15); color: #087a52; }
+  .b-cyan { background: rgba(0,192,244,.15); color: #007fa5; }
+  .b-warn { background: rgba(255,193,7,.2); color: #856404; }
+  .b-danger { background: rgba(220,53,69,.12); color: #b02a37; }
+  .tag { display: inline-flex; align-items: center; padding: 3px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; gap: 4px; }
+  .tag-hiper { background: rgba(0,192,244,.15); color: #0072a3; }
+  .tag-dia { background: rgba(253,126,20,.15); color: #8d4a0c; }
+  .tag-gest { background: rgba(232,62,140,.15); color: #9d1f62; }
+  .tag-vuln { background: rgba(255,193,7,.2); color: #856404; }
+  .tag-emerg { background: rgba(220,53,69,.12); color: #9b1c28; }
+  h4 { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .15em; color: #666; margin: 0 0 10px; }
+</style></head>
+<body>
+  <h4>Badges — estados gerais</h4>
+  <div class="row">
+    <span class="badge b-primary">SMS Rio</span>
+    <span class="badge b-green">Ativo</span>
+    <span class="badge b-cyan">Agendado</span>
+    <span class="badge b-warn">Pendente</span>
+    <span class="badge b-danger">Urgente</span>
+  </div>
+  <h4>Tags clínicas</h4>
+  <div class="row">
+    <span class="tag tag-hiper">Hipertenso</span>
+    <span class="tag tag-dia">Diabético</span>
+    <span class="tag tag-gest">Gestante</span>
+    <span class="tag tag-vuln">Vulnerável</span>
+    <span class="tag tag-emerg">Emergência recente</span>
+  </div>
+</body></html>
