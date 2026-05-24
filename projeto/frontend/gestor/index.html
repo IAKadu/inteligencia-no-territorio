@@ -569,6 +569,23 @@
       padding: var(--space-3) var(--space-4); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
       font-size: var(--text-sm); color: var(--grey-text); line-height: 1.6; margin-top: var(--space-3);
     }
+    .agenda-filter-bar {
+      background: var(--white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-4) var(--space-5);
+      display: flex;
+      align-items: flex-end;
+      gap: var(--space-4);
+      margin-bottom: var(--space-5);
+      box-shadow: var(--shadow-sm);
+    }
+    .agenda-filter-bar .filter-group { min-width: 220px; }
+    .agenda-filter-note {
+      color: var(--grey-text);
+      font-size: var(--text-xs);
+      margin-bottom: 10px;
+    }
 
     /* ── MAP ─────────────────────────────────────────────────────────── */
     #map-container {
@@ -1104,6 +1121,8 @@
       .agenda-card__score-value { font-size: var(--text-base); }
       .agenda-card__dist { font-size: 10px; }
       .card-patient__meta { flex-wrap: wrap; gap: var(--space-3); }
+      .agenda-filter-bar { flex-direction: column; align-items: stretch; }
+      .agenda-filter-bar .filter-group { width: 100%; min-width: unset; }
 
       /* Tooltip: abrir para cima e centralizado */
       .score-tooltip { right: auto; left: 50%; transform: translateX(-50%); width: 240px; }
@@ -1493,6 +1512,15 @@
           <span>&#128203; <span id="agenda-total-visits">—</span> visitas</span>
           <span>&#128205; <span id="agenda-total-dist">—</span> km total</span>
           <span>&#9679; <span id="agenda-criticos">—</span> crítico/urgente</span>
+        </div>
+        <div class="agenda-filter-bar">
+          <div class="filter-group">
+            <label>Ver rota do ACS</label>
+            <select id="agenda-acs-filter" onchange="filtrarAgendaPorAcs()">
+              <option value="">Todos os ACS</option>
+            </select>
+          </div>
+          <div class="agenda-filter-note" id="agenda-filter-note">Mostrando a rota completa da equipe.</div>
         </div>
         <div class="agenda-list" id="agenda-list"></div>
         <div id="map-container">
@@ -2192,6 +2220,10 @@
   }
 
   /* ── agenda ─────────────────────────────────────────────────────────── */
+  let agendaAtual = [];
+  let agendaHqAtual = { lat: null, lon: null };
+  let agendaConfigAtual = { acsCount: 6, visitasPorAcs: 6 };
+
   async function gerarAgenda() {
     const eid = document.getElementById('agenda-equipe-sel').value;
     const acsCount = Math.max(1, Number(document.getElementById('agenda-acs').value) || 6);
@@ -2220,52 +2252,19 @@
       const distTotal = visitas[visitas.length - 1]?.distancia_acumulada_km || 0;
       const critUrgCount = visitas.filter(v => v.prioridade === 'CRITICO' || v.prioridade === 'URGENTE').length;
 
+      agendaConfigAtual = { acsCount, visitasPorAcs };
+      agendaAtual = visitas.map((v, i) => ({
+        ...v,
+        acs_sugerido: Math.min(acsCount, Math.floor(i / visitasPorAcs) + 1),
+      }));
+
       document.getElementById('agenda-total-acs').textContent = acsCount;
       document.getElementById('agenda-visitas-acs').textContent = visitasPorAcs;
-      document.getElementById('agenda-total-visits').textContent = visitas.length;
+      document.getElementById('agenda-total-visits').textContent = agendaAtual.length;
       document.getElementById('agenda-total-dist').textContent = fmtKm(distTotal);
       document.getElementById('agenda-criticos').textContent = critUrgCount;
 
-      const list = document.getElementById('agenda-list');
-      list.innerHTML = visitas.map((v, i) => {
-        const pc = priorityClass(v.prioridade);
-        const tags = condTags(v);
-        const acsNum = Math.min(acsCount, Math.floor(i / visitasPorAcs) + 1);
-        const justificativa = v.justificativa
-          ? `<div class="agenda-card__justificativa"><strong>Orientação ACS:</strong> ${stripMd(v.justificativa)}</div>`
-          : '';
-        return `
-          <div class="agenda-card">
-            <div class="agenda-card__top">
-              <div class="agenda-card__priority-strip ${pc}"></div>
-              <div class="agenda-card__order-col">
-                <div>${v.ordem_visita}</div>
-                <div class="agenda-card__order-label">ACS ${String(acsNum).padStart(2, '0')}</div>
-              </div>
-              <div class="agenda-card__body">
-                <div class="agenda-card__header">
-                  <div>
-                    ${priorityBadge(v.prioridade)}
-                    <div style="margin-top:var(--space-2);">${tags || '<span style="color:var(--grey-text);font-size:var(--text-xs);">Sem condição especial</span>'}</div>
-                  </div>
-                  <div class="agenda-card__score-block">
-                    <div class="agenda-card__score-label">Score</div>
-                    <div class="agenda-card__score-value">${scoreWrap(v)}</div>
-                    <div class="agenda-card__dist">${fmtKm(v.distancia_anterior_km || 0)} desta parada</div>
-                  </div>
-                </div>
-                <div class="card-patient__meta">
-                  <div class="card-patient__meta-item"><strong>Faixa:</strong> ${v.faixa_etaria || '—'}</div>
-                  <div class="card-patient__meta-item"><strong>Visitas/ano:</strong> ${v.n_visitas || 0}</div>
-                  <div class="card-patient__meta-item"><strong>Urgências:</strong> ${v.n_urg_ano || 0}</div>
-                  <div class="card-patient__meta-item"><strong>ACS sugerido:</strong> ${String(acsNum).padStart(2, '0')}</div>
-                  <div class="card-patient__meta-item"><strong>Dist. acumulada:</strong> ${fmtKm(v.distancia_acumulada_km || 0)}</div>
-                </div>
-                ${justificativa}
-              </div>
-            </div>
-          </div>`;
-      }).join('');
+      preencherFiltroAcs(acsCount);
 
       document.getElementById('agenda-result').style.display = 'block';
 
@@ -2273,7 +2272,8 @@
       const hq = _hqCoords[eid];
       const hqLat = hq ? hq.endereco_latitude  : null;
       const hqLon = hq ? hq.endereco_longitude : null;
-      setTimeout(() => renderMap(visitas, hqLat, hqLon), 50);
+      agendaHqAtual = { lat: hqLat, lon: hqLon };
+      filtrarAgendaPorAcs();
     } catch (e) {
       document.getElementById('agenda-empty').innerHTML = `
         <div style="font-size:48px;margin-bottom:var(--space-4);">&#9888;</div>
@@ -2284,6 +2284,118 @@
       btn.disabled = false;
       btn.textContent = '▶ Gerar agenda';
     }
+  }
+
+  function preencherFiltroAcs(acsCount) {
+    const sel = document.getElementById('agenda-acs-filter');
+    sel.innerHTML = '<option value="">Todos os ACS</option>';
+    for (let i = 1; i <= acsCount; i++) {
+      const visitasAcs = agendaAtual.filter(v => v.acs_sugerido === i).length;
+      sel.appendChild(new Option(`ACS ${String(i).padStart(2, '0')} · ${visitasAcs} visitas`, String(i)));
+    }
+    sel.value = '';
+  }
+
+  function filtrarAgendaPorAcs() {
+    const sel = document.getElementById('agenda-acs-filter');
+    const acsSelecionado = sel ? Number(sel.value) : 0;
+    const visitas = acsSelecionado
+      ? agendaAtual.filter(v => v.acs_sugerido === acsSelecionado)
+      : agendaAtual;
+
+    renderAgendaList(visitas, acsSelecionado);
+
+    const note = document.getElementById('agenda-filter-note');
+    const critUrgCount = visitas.filter(v => v.prioridade === 'CRITICO' || v.prioridade === 'URGENTE').length;
+    const distTotal = calcularDistanciaRota(visitas, agendaHqAtual.lat, agendaHqAtual.lon);
+    if (note) {
+      note.textContent = acsSelecionado
+        ? `Mostrando ACS ${String(acsSelecionado).padStart(2, '0')}: ${visitas.length} visitas, ${critUrgCount} crítico/urgente.`
+        : `Mostrando a rota completa da equipe: ${agendaAtual.length} visitas.`;
+    }
+    document.getElementById('agenda-total-visits').textContent = visitas.length;
+    document.getElementById('agenda-total-dist').textContent = fmtKm(distTotal);
+    document.getElementById('agenda-criticos').textContent = critUrgCount;
+
+    const visitasMapa = visitas.map((v, i) => ({
+      ...v,
+      ordem_mapa: acsSelecionado ? i + 1 : v.ordem_visita,
+    }));
+    setTimeout(() => renderMap(visitasMapa, agendaHqAtual.lat, agendaHqAtual.lon), 50);
+  }
+
+  function haversineKm(lat1, lon1, lat2, lon2) {
+    const R = 6371;
+    const toRad = d => d * Math.PI / 180;
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) ** 2 +
+      Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+
+  function calcularDistanciaRota(visitas, hqLat, hqLon) {
+    if (!visitas.length) return 0;
+    const pontos = [];
+    if (hqLat && hqLon) pontos.push([hqLat, hqLon]);
+    visitas.forEach(v => pontos.push([v.endereco_latitude, v.endereco_longitude]));
+    if (hqLat && hqLon) pontos.push([hqLat, hqLon]);
+    let total = 0;
+    for (let i = 0; i < pontos.length - 1; i++) {
+      total += haversineKm(pontos[i][0], pontos[i][1], pontos[i + 1][0], pontos[i + 1][1]);
+    }
+    return total;
+  }
+
+  function renderAgendaList(visitas, acsSelecionado) {
+    const list = document.getElementById('agenda-list');
+    if (!visitas.length) {
+      list.innerHTML = '<div style="text-align:center;padding:var(--space-6);color:var(--grey-text);">Nenhuma visita para este ACS.</div>';
+      return;
+    }
+
+    list.innerHTML = visitas.map((v, i) => {
+      const pc = priorityClass(v.prioridade);
+      const tags = condTags(v);
+      const acsNum = v.acs_sugerido || 1;
+      const ordemAcs = acsSelecionado ? i + 1 : ((i % agendaConfigAtual.visitasPorAcs) + 1);
+      const justificativa = v.justificativa
+        ? `<div class="agenda-card__justificativa"><strong>Orientação ACS:</strong> ${stripMd(v.justificativa)}</div>`
+        : '';
+      return `
+        <div class="agenda-card">
+          <div class="agenda-card__top">
+            <div class="agenda-card__priority-strip ${pc}"></div>
+            <div class="agenda-card__order-col">
+              <div>${ordemAcs}</div>
+              <div class="agenda-card__order-label">ACS ${String(acsNum).padStart(2, '0')}</div>
+            </div>
+            <div class="agenda-card__body">
+              <div class="agenda-card__header">
+                <div>
+                  ${priorityBadge(v.prioridade)}
+                  <div style="margin-top:var(--space-2);">${tags || '<span style="color:var(--grey-text);font-size:var(--text-xs);">Sem condição especial</span>'}</div>
+                </div>
+                <div class="agenda-card__score-block">
+                  <div class="agenda-card__score-label">Score</div>
+                  <div class="agenda-card__score-value">${scoreWrap(v)}</div>
+                  <div class="agenda-card__dist">${fmtKm(v.distancia_anterior_km || 0)} desta parada</div>
+                </div>
+              </div>
+              <div class="card-patient__meta">
+                <div class="card-patient__meta-item"><strong>Faixa:</strong> ${v.faixa_etaria || '—'}</div>
+                <div class="card-patient__meta-item"><strong>Visitas/ano:</strong> ${v.n_visitas || 0}</div>
+                <div class="card-patient__meta-item"><strong>Urgências:</strong> ${v.n_urg_ano || 0}</div>
+                <div class="card-patient__meta-item"><strong>ACS sugerido:</strong> ${String(acsNum).padStart(2, '0')}</div>
+                <div class="card-patient__meta-item"><strong>Ordem do ACS:</strong> ${ordemAcs}</div>
+                <div class="card-patient__meta-item"><strong>Dist. acumulada:</strong> ${fmtKm(v.distancia_acumulada_km || 0)}</div>
+              </div>
+              ${justificativa}
+            </div>
+          </div>
+        </div>`;
+    }).join('');
   }
 
   /* ── risco ──────────────────────────────────────────────────────────── */
@@ -2397,6 +2509,7 @@
   }
 
   function renderMap(visitas, hqLat, hqLon) {
+    if (!visitas.length && !hqLat) return;
     if (!_map) initMap(hqLat || visitas[0].endereco_latitude, hqLon || visitas[0].endereco_longitude);
     else {
       _mapLayers.forEach(l => _map.removeLayer(l));
@@ -2430,7 +2543,7 @@
     visitas.forEach(v => {
       const color = PRIORITY_COLORS[v.prioridade] || '#6c757d';
       const icon = L.divIcon({
-        html: `<div class="map-marker-num" style="background:${color};">${v.ordem_visita}</div>`,
+        html: `<div class="map-marker-num" style="background:${color};">${v.ordem_mapa || v.ordem_visita}</div>`,
         className: '', iconSize: [28,28], iconAnchor: [14,14],
       });
 
@@ -2444,7 +2557,7 @@
       const popupHtml = `
         <div class="popup-priority" style="color:${color};">● ${v.prioridade}</div>
         <div class="popup-score">${v.score_total} <span style="font-size:12px;color:#666;font-weight:400;">pts</span></div>
-        <div style="font-size:11px;color:#555;margin-top:4px;">Visita ${v.ordem_visita} · ${v.faixa_etaria} · ${fmtKm(v.distancia_anterior_km)} desta parada</div>
+        <div style="font-size:11px;color:#555;margin-top:4px;">Visita ${v.ordem_mapa || v.ordem_visita} · ACS ${String(v.acs_sugerido || 1).padStart(2, '0')} · ${v.faixa_etaria}</div>
         ${tags.length ? `<div class="popup-tags">${tags.join('')}</div>` : ''}
         ${v.justificativa ? `<div style="margin-top:8px;padding:6px 8px;background:#f0f6fc;border-left:3px solid #00c0f4;border-radius:0 4px 4px 0;font-size:11px;color:#444;line-height:1.5;">${stripMd(v.justificativa)}</div>` : ''}
       `;
