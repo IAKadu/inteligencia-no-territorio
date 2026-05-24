@@ -2644,6 +2644,7 @@
       const tags = condTags(v);
       const acsNum = v.acs_sugerido || 1;
       const ordemAcs = acsSelecionado ? i + 1 : ((i % agendaConfigAtual.visitasPorAcs) + 1);
+      const pacienteCurto = (v.paciente_id || '').slice(-8);
       const justificativa = v.justificativa
         ? `<div class="agenda-card__justificativa"><strong>Orientação ACS:</strong> ${stripMd(v.justificativa)}</div>`
         : '';
@@ -2659,6 +2660,7 @@
               <div class="agenda-card__header">
                 <div>
                   ${priorityBadge(v.prioridade)}
+                  <div class="card-patient__id" title="${v.paciente_id || ''}" style="margin-top:var(--space-2);">Paciente ${pacienteCurto || '—'}</div>
                   <div style="margin-top:var(--space-2);">${tags || '<span style="color:var(--grey-text);font-size:var(--text-xs);">Sem condição especial</span>'}</div>
                 </div>
                 <div class="agenda-card__score-block">
@@ -2826,6 +2828,7 @@
     // Visit markers
     visitas.forEach(v => {
       const color = PRIORITY_COLORS[v.prioridade] || '#6c757d';
+      const pacienteCurto = (v.paciente_id || '').slice(-8);
       const icon = L.divIcon({
         html: `<div class="map-marker-num" style="background:${color};">${v.ordem_mapa || v.ordem_visita}</div>`,
         className: '', iconSize: [28,28], iconAnchor: [14,14],
@@ -2841,7 +2844,7 @@
       const popupHtml = `
         <div class="popup-priority" style="color:${color};">● ${v.prioridade}</div>
         <div class="popup-score">${v.score_total} <span style="font-size:12px;color:#666;font-weight:400;">pts</span></div>
-        <div style="font-size:11px;color:#555;margin-top:4px;">Visita ${v.ordem_mapa || v.ordem_visita} · ACS ${String(v.acs_sugerido || 1).padStart(2, '0')} · ${v.faixa_etaria}</div>
+        <div style="font-size:11px;color:#555;margin-top:4px;">Paciente ${pacienteCurto || '—'} · Visita ${v.ordem_mapa || v.ordem_visita} · ACS ${String(v.acs_sugerido || 1).padStart(2, '0')} · ${v.faixa_etaria}</div>
         ${tags.length ? `<div class="popup-tags">${tags.join('')}</div>` : ''}
         ${v.justificativa ? `<div style="margin-top:8px;padding:6px 8px;background:#f0f6fc;border-left:3px solid #00c0f4;border-radius:0 4px 4px 0;font-size:11px;color:#444;line-height:1.5;">${stripMd(v.justificativa)}</div>` : ''}
       `;
